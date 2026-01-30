@@ -1,0 +1,16 @@
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "declaration": true,
+    "emitDeclarationOnly": true,
+    "declarationDir": "types",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "target": "es2020",
+    "skipLibCheck": true
+  },
+  "include": [
+    "index.js"
+  ]
+}

@@ -65,6 +65,7 @@ var Commands = {
     ALLOW_DEFAULT: 34,
     PREVENT_DEFAULT: 35,
     UNSUBSCRIBE: 36,
+    CHANGE_TEXT_CONTENT: 37,
     prettyPrint: function (buffer, start, count) {
         var callback;
         start = start ? start : 0;
@@ -193,6 +194,10 @@ commandPrinters[Commands.ALLOW_DEFAULT] = function allow_default (buffer, data) 
     data.result += data.i + '. ALLOW_DEFAULT\n    value: ' + buffer[++data.i] + '\n\n';
 };
 
+commandPrinters[Commands.CHANGE_TEXT_CONTENT] = function change_text_content (buffer, data) {
+    data.result += data.i + '. CHANGE_TEXT_CONTENT\n    content: ' + buffer[++data.i] + '\n\n';
+};
+
 commandPrinters[Commands.READY] = function ready (buffer, data) {
     data.result += data.i + '. READY\n\n';
 };
@@ -210,4 +215,3 @@ commandPrinters[Commands.NEED_SIZE_FOR] = function need_size_for (buffer, data) 
 };
 
 module.exports = Commands;
-

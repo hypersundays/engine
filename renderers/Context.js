@@ -160,6 +160,7 @@ Context.prototype.initCommandCallbacks = function initCommandCallbacks () {
     this._commandCallbacks[Commands.CHANGE_SIZE] = changeSize;
     this._commandCallbacks[Commands.CHANGE_PROPERTY] = changeProperty;
     this._commandCallbacks[Commands.CHANGE_CONTENT] = changeContent;
+    this._commandCallbacks[Commands.CHANGE_TEXT_CONTENT] = changeTextContent;
     this._commandCallbacks[Commands.CHANGE_ATTRIBUTE] = changeAttribute;
     this._commandCallbacks[Commands.ADD_CLASS] = addClass;
     this._commandCallbacks[Commands.REMOVE_CLASS] = removeClass;
@@ -368,6 +369,12 @@ function changeProperty (context, path, commands, iterator) {
 function changeContent (context, path, commands, iterator) {
     if (context._webGLRenderer) context._webGLRenderer.getOrSetCutout(path);
     context._domRenderer.setContent(commands[++iterator]);
+    return iterator;
+}
+
+function changeTextContent (context, path, commands, iterator) {
+    if (context._webGLRenderer) context._webGLRenderer.getOrSetCutout(path);
+    context._domRenderer.setTextContent(commands[++iterator]);
     return iterator;
 }
 
