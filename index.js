@@ -22,6 +22,29 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
+/**
+ * @typedef {object} FamousEnginePublicApi
+ * @property {object} components
+ * @property {object} core
+ * @property {object} renderLoops
+ * @property {object} domRenderables
+ * @property {object} domRenderers
+ * @property {object} math
+ * @property {object} physics
+ * @property {object} renderers
+ * @property {object} transitions
+ * @property {object} utilities
+ * @property {object} webglRenderables
+ * @property {object} webglRenderers
+ * @property {object} webglGeometries
+ * @property {object} webglMaterials
+ * @property {object} webglShaders
+ * @property {object} polyfills
+ */
+
+/** @type {FamousEnginePublicApi} */
 module.exports = {
     components: require('./components'),
     core: require('./core'),

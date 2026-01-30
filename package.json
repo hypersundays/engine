@@ -2,31 +2,49 @@
   "name": "famous",
   "version": "0.7.1",
   "description": "",
-  "main": "index.js",
+  "main": "dist/famous.cjs",
+  "module": "dist/famous.mjs",
+  "types": "types/index.d.ts",
+  "exports": {
+    ".": {
+      "import": "./dist/famous.mjs",
+      "require": "./dist/famous.cjs",
+      "types": "./types/index.d.ts"
+    },
+    "./components/*": "./components/*.js",
+    "./core/*": "./core/*.js",
+    "./render-loops/*": "./render-loops/*.js",
+    "./dom-renderables/*": "./dom-renderables/*.js",
+    "./dom-renderers/*": "./dom-renderers/*.js",
+    "./math/*": "./math/*.js",
+    "./physics/*": "./physics/*.js",
+    "./renderers/*": "./renderers/*.js",
+    "./transitions/*": "./transitions/*.js",
+    "./utilities/*": "./utilities/*.js",
+    "./webgl-renderables/*": "./webgl-renderables/*.js",
+    "./webgl-renderers/*": "./webgl-renderers/*.js",
+    "./webgl-geometries/*": "./webgl-geometries/*.js",
+    "./webgl-materials/*": "./webgl-materials/*.js",
+    "./webgl-shaders/*": "./webgl-shaders/*.js",
+    "./polyfills/*": "./polyfills/*.js"
+  },
+  "typesVersions": {
+    "*": {
+      "*": [
+        "types/index.d.ts"
+      ]
+    }
+  },
   "scripts": {
-    "tape": "tap-closer | smokestack -b firefox | tap-spec",
-    "test-new": "node ./scripts/test.js ./core/**/*.spec.js",
-    "test-components": "browserify components/test/*.js | npm run tape",
-    "test-core": "npm run test-new",
-    "test-dom-renderables": "browserify dom-renderables/test/*.js | npm run tape",
-    "test-dom-renderers": "browserify dom-renderers/test/*.js | npm run tape",
-    "test-render-loops": "browserify render-loops/test/*.js | npm run tape",
-    "test-math": "browserify math/test/*.js | npm run tape",
-    "test-physics": "browserify physics/test/*.js physics/test/*/*.js | npm run tape",
-    "test-polyfills": "browserify polyfills/test/*.js | npm run tape",
-    "test-renderers": "browserify renderers/test/*.js | npm run tape",
-    "test-transitions": "browserify transitions/test/*.js | npm run tape",
-    "test-utilities": "browserify utilities/test/*.js | npm run tape",
-    "test-webgl-geometries": "browserify webgl-geometries/test/*.js | npm run tape",
-    "test-webgl-materials": "browserify webgl-materials/test/*.js | npm run tape",
-    "test-webgl-renderables": "browserify webgl-renderables/test/*.js | npm run tape",
-    "test-webgl-renderers": "browserify webgl-renderers/test/*.js | npm run tape",
-    "test": "EXIT_STATUS=0; npm run test-components || EXIT_STATUS=$?; npm run test-core || EXIT_STATUS=$?; npm run test-dom-renderables || EXIT_STATUS=$?; npm run test-dom-renderers || EXIT_STATUS=$?; npm run test-render-loops || EXIT_STATUS=$?; npm run test-math || EXIT_STATUS=$?; npm run test-physics || EXIT_STATUS=$?; npm run test-polyfills || EXIT_STATUS=$?; npm run test-renderers || EXIT_STATUS=$?; npm run test-transitions || EXIT_STATUS=$?; npm run test-utilities || EXIT_STATUS=$?; npm run test-webgl-geometries || EXIT_STATUS=$?; npm run test-webgl-materials || EXIT_STATUS=$?; npm run test-webgl-renderables || EXIT_STATUS=$?; npm run test-webgl-renderers; exit $EXIT_STATUS",
-    "check-jsdoc": "eslint --reset --no-eslintrc --rule 'valid-jsdoc: 2' --ignore-path .gitignore .",
-    "lint": "eslint --ignore-path .gitignore .",
-    "build": "npm run build-debug && npm run build-min",
-    "build-debug": "browserify index.js -d --standalone famous > dist/famous.js",
-    "build-min": "browserify index.js --standalone famous | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > dist/famous.min.js"
+    "dev": "vite",
+    "build": "vite build",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "test:browser": "playwright test",
+    "lint": "eslint .",
+    "format": "prettier --check .",
+    "format:write": "prettier --write .",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "repository": {
     "type": "git",
@@ -35,25 +53,16 @@
   "author": "Famous",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^10.2.1",
-    "colors": "^1.1.0",
-    "eslint": "^0.21.2",
-    "glob": "^5.0.10",
-    "istanbul": "^0.3.15",
-    "rewire": "^2.3.3",
-    "sinon": "^1.14.1",
-    "smokestack": "^3.2.2",
-    "tap-closer": "^1.0.0",
-    "tape": "^4.0.0",
-    "tap-spec": "^4.0.0",
-    "uglify-js": "^2.4.17"
+    "@eslint/js": "^9.0.0",
+    "@playwright/test": "^1.49.0",
+    "eslint": "^9.0.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.3.3",
+    "typescript": "^5.5.4",
+    "vite": "^5.4.0",
+    "vitest": "^1.6.0"
   },
   "dependencies": {
     "glslify": "^2.0.0"
-  },
-  "browserify": {
-    "transform": [
-      "glslify"
-    ]
   }
 }

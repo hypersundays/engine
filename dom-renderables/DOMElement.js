@@ -68,6 +68,7 @@ function DOMElement(node, options) {
 
     this._attributes = {};
     this._content = '';
+    this._contentIsHTML = true;
 
     this._tagName = options && options.tagName ? options.tagName : 'div';
     this._renderSize = [0, 0, 0];
@@ -603,7 +604,30 @@ DOMElement.prototype.setProperty = function setProperty (name, value) {
 DOMElement.prototype.setContent = function setContent (content) {
     if (this._content !== content || this._inDraw) {
         this._content = content;
+        this._contentIsHTML = true;
         if (this._initialized) this._changeQueue.push(Commands.CHANGE_CONTENT, content);
+        if (!this._requestingUpdate) this._requestUpdate();
+        if (this._renderSized) this._requestRenderSize = true;
+    }
+
+    return this;
+};
+
+/**
+ * Sets the text content of the DOMElement. This uses `textContent` for a safe
+ * text-only update.
+ *
+ * @method
+ *
+ * @param {String} content Content to be set using `.textContent = ...`
+ *
+ * @return {DOMElement} this
+ */
+DOMElement.prototype.setTextContent = function setTextContent (content) {
+    if (this._content !== content || this._inDraw) {
+        this._content = content;
+        this._contentIsHTML = false;
+        if (this._initialized) this._changeQueue.push(Commands.CHANGE_TEXT_CONTENT, content);
         if (!this._requestingUpdate) this._requestUpdate();
         if (this._renderSized) this._requestRenderSize = true;
     }
@@ -672,7 +696,10 @@ DOMElement.prototype.draw = function draw() {
     for (i = 0, len = this._classes.length ; i < len ; i++)
         this.addClass(this._classes[i]);
 
-    if (this._content) this.setContent(this._content);
+    if (this._content) {
+        if (this._contentIsHTML) this.setContent(this._content);
+        else this.setTextContent(this._content);
+    }
 
     for (key in this._styles)
         if (this._styles[key] != null)

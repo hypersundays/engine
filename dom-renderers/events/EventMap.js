@@ -30,6 +30,7 @@ var FocusEvent = require('./FocusEvent');
 var InputEvent = require('./InputEvent');
 var KeyboardEvent = require('./KeyboardEvent');
 var MouseEvent = require('./MouseEvent');
+var PointerEvent = require('./PointerEvent');
 var TouchEvent = require('./TouchEvent');
 var UIEvent = require('./UIEvent');
 var WheelEvent = require('./WheelEvent');
@@ -72,6 +73,16 @@ var EventMap = {
     mouseup                        : [MouseEvent, true],
     contextMenu                    : [MouseEvent, true],
     resize                         : [UIEvent, false],
+
+    // Pointer Events (https://www.w3.org/TR/pointerevents/)
+    pointerdown                    : [PointerEvent, true],
+    pointermove                    : [PointerEvent, true],
+    pointerup                      : [PointerEvent, true],
+    pointercancel                  : [PointerEvent, true],
+    pointerenter                   : [PointerEvent, false],
+    pointerleave                   : [PointerEvent, false],
+    pointerover                    : [PointerEvent, true],
+    pointerout                     : [PointerEvent, true],
 
     // might bubble
     scroll                         : [UIEvent, false],

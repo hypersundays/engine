@@ -202,8 +202,9 @@ DOMRenderer.prototype.unsubscribe = function unsubscribe(type) {
 DOMRenderer.prototype._triggerEvent = function _triggerEvent(ev) {
     if (this._lastEv === ev) return;
 
-    // Use ev.path, which is an array of Elements (polyfilled if needed).
-    var evPath = ev.path ? ev.path : _getPath(ev);
+    // Prefer the composed path when available. Fall back to legacy `path` or
+    // a manual traversal for older browsers.
+    var evPath = _getEventPath(ev);
     // First element in the path is the element on which the event has actually
     // been emitted.
     for (var i = 0; i < evPath.length; i++) {
@@ -260,11 +261,17 @@ function _getPath(ev) {
     // TODO move into _triggerEvent, avoid object allocation
     var path = [];
     var node = ev.target;
-    while (node !== document.body) {
+    while (node && node !== document.body) {
         path.push(node);
         node = node.parentNode;
     }
     return path;
+}
+
+function _getEventPath(ev) {
+    if (ev.composedPath) return ev.composedPath();
+    if (ev.path) return ev.path;
+    return _getPath(ev);
 }
 
 /**
@@ -622,6 +629,39 @@ DOMRenderer.prototype.setContent = function setContent(content) {
         this._target.content.innerHTML = content;
     }
 
+
+    this.setSize(
+        this._target.explicitWidth ? false : this._target.size[0],
+        this._target.explicitHeight ? false : this._target.size[1]
+    );
+};
+
+/**
+ * Sets the text content of the currently loaded target, avoiding `innerHTML`.
+ *
+ * @method
+ *
+ * @param {String} content Content to be set as `textContent`
+ *
+ * @return {undefined} undefined
+ */
+DOMRenderer.prototype.setTextContent = function setTextContent(content) {
+    this._assertTargetLoaded();
+
+    if (this._target.formElement) {
+        this._target.element.value = content;
+    }
+    else {
+        if (!this._target.content) {
+            this._target.content = document.createElement('div');
+            this._target.content.classList.add('famous-dom-element-content');
+            this._target.element.insertBefore(
+                this._target.content,
+                this._target.element.firstChild
+            );
+        }
+        this._target.content.textContent = content;
+    }
 
     this.setSize(
         this._target.explicitWidth ? false : this._target.size[0],
