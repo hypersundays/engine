@@ -27,5 +27,6 @@
 module.exports = {
     RequestAnimationFrameLoop: require('./RequestAnimationFrameLoop'),
     ContainerLoop: require('./ContainerLoop'),
+    Scheduler: require('./Scheduler'),
     now: require('./now')
 };

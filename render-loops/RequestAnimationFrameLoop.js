@@ -25,6 +25,7 @@
 'use strict';
 
 var polyfills = require('../polyfills');
+var Scheduler = require('./Scheduler');
 var rAF = polyfills.requestAnimationFrame;
 var cAF = polyfills.cancelAnimationFrame;
 
@@ -55,7 +56,8 @@ function RequestAnimationFrameLoop() {
     var _this = this;
 
     // References to objects to be updated on next frame.
-    this._updates = [];
+    this._scheduler = new Scheduler();
+    this._updates = this._scheduler._updates;
 
     this._looper = function(time) {
         _this.loop(time);
@@ -228,9 +230,7 @@ RequestAnimationFrameLoop.prototype.step = function step (time) {
     // The same timetamp will be emitted immediately before and after visibility
     // change.
     var normalizedTime = time - this._sleep;
-    for (var i = 0, len = this._updates.length ; i < len ; i++) {
-        this._updates[i].update(normalizedTime);
-    }
+    this._scheduler.step(normalizedTime);
     return this;
 };
 
@@ -264,9 +264,7 @@ RequestAnimationFrameLoop.prototype.loop = function loop(time) {
  * @return {RequestAnimationFrameLoop} this
  */
 RequestAnimationFrameLoop.prototype.update = function update(updateable) {
-    if (this._updates.indexOf(updateable) === -1) {
-        this._updates.push(updateable);
-    }
+    this._scheduler.update(updateable);
     return this;
 };
 
@@ -282,10 +280,7 @@ RequestAnimationFrameLoop.prototype.update = function update(updateable) {
  * @return {RequestAnimationFrameLoop} this
  */
 RequestAnimationFrameLoop.prototype.noLongerUpdate = function noLongerUpdate(updateable) {
-    var index = this._updates.indexOf(updateable);
-    if (index > -1) {
-        this._updates.splice(index, 1);
-    }
+    this._scheduler.noLongerUpdate(updateable);
     return this;
 };
 

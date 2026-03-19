@@ -25,6 +25,7 @@
 'use strict';
 
 var now = require('./now');
+var Scheduler = require('./Scheduler');
 
 /**
  * Loop class used for updating objects on a frame-by-frame. Synchronizes the
@@ -35,7 +36,8 @@ var now = require('./now');
  * @class ContainerLoop
  */
 function ContainerLoop() {
-    this._updates = [];
+    this._scheduler = new Scheduler();
+    this._updates = this._scheduler._updates;
     this._stoppedAt = now();
     this._sleep = 0;
 
@@ -114,9 +116,7 @@ ContainerLoop.prototype.isRunning = function isRunning() {
  * @return {ContainerLoop} this
  */
 ContainerLoop.prototype.step = function step (time) {
-    for (var i = 0, len = this._updates.length ; i < len ; i++) {
-        this._updates[i].update(time);
-    }
+    this._scheduler.step(time);
     return this;
 };
 
@@ -132,9 +132,7 @@ ContainerLoop.prototype.step = function step (time) {
  * @return {ContainerLoop} this
  */
 ContainerLoop.prototype.update = function update(updateable) {
-    if (this._updates.indexOf(updateable) === -1) {
-        this._updates.push(updateable);
-    }
+    this._scheduler.update(updateable);
     return this;
 };
 
@@ -149,10 +147,7 @@ ContainerLoop.prototype.update = function update(updateable) {
  * @return {ContainerLoop} this
  */
 ContainerLoop.prototype.noLongerUpdate = function noLongerUpdate(updateable) {
-    var index = this._updates.indexOf(updateable);
-    if (index > -1) {
-        this._updates.splice(index, 1);
-    }
+    this._scheduler.noLongerUpdate(updateable);
     return this;
 };
 
