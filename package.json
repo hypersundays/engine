@@ -237,7 +237,7 @@
     "test": "npm run test:unit && npm run test:browser",
     "test:unit": "vitest run",
     "test:browser": "playwright test",
-    "typecheck": "npm run build:types && tsc -p tsconfig.json --noEmit"
+    "typecheck": "npm run build:types && tsc -p tsconfig.json --noEmit && tsc -p tsconfig.jsdoc.json --noEmit"
   },
   "repository": {
     "type": "git",

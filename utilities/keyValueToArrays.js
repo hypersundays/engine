@@ -1,5 +1,7 @@
 'use strict';
 
+// @ts-check
+
 /**
  * The MIT License (MIT)
  *
@@ -31,12 +33,10 @@
  *
  * @method keyValuesToArrays
  *
- * @param {Object} obj                      Objects where to extract keys and values
- *                                          from.
- * @return {Object}         result
- *         {Array.<String>} result.keys     Keys of `result`, as returned by
- *                                          `Object.keys()`
- *         {Array}          result.values   Values of passed in object.
+ * @template T
+ * @param {{ [key: string]: T }} obj        Object where to extract keys and
+ *                                          values from.
+ * @return {{ keys: string[], values: T[] }} result
  */
 module.exports = function keyValuesToArrays(obj) {
     var keysArray = [], valuesArray = [];

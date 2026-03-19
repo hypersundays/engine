@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
@@ -35,6 +37,7 @@
 function Clock () {
     this._time = 0;
     this._frame = 0;
+    /** @type {Array<(time: number) => boolean>} */
     this._timerQueue = [];
     this._updatingIndex = 0;
 
@@ -147,7 +150,7 @@ Clock.prototype.getFrame = function getFrame () {
 Clock.prototype.setTimeout = function (callback, delay) {
     var params = Array.prototype.slice.call(arguments, 2);
     var startedAt = this._time;
-    var timer = function(time) {
+    var timer = function(/** @type {number} */ time) {
         if (time - startedAt >= delay) {
             callback.apply(null, params);
             return true;
@@ -174,7 +177,7 @@ Clock.prototype.setTimeout = function (callback, delay) {
 Clock.prototype.setInterval = function setInterval(callback, delay) {
     var params = Array.prototype.slice.call(arguments, 2);
     var startedAt = this._time;
-    var timer = function(time) {
+    var timer = function(/** @type {number} */ time) {
         if (time - startedAt >= delay) {
             callback.apply(null, params);
             startedAt = time;
@@ -192,7 +195,7 @@ Clock.prototype.setInterval = function setInterval(callback, delay) {
  * @method clearTimer
  * @chainable
  *
- * @param  {Function} timer  previously by `Clock#setTimeout` or
+ * @param  {(time: number) => boolean} timer  previously by `Clock#setTimeout` or
  *                              `Clock#setInterval` returned callback function
  * @return {Clock}              this
  */

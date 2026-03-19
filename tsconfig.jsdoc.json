@@ -1,20 +1,23 @@
 {
   "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
     "target": "ES2020",
     "module": "CommonJS",
     "moduleResolution": "Node",
     "strict": true,
-    "noEmit": true,
     "skipLibCheck": true,
     "esModuleInterop": true,
-    "baseUrl": ".",
-    "paths": {
-      "famous": ["dist/types/index.d.ts"],
-      "famous/*": ["dist/types/*"]
-    },
     "lib": ["ES2020", "DOM"]
   },
-  "include": ["test/types/**/*.ts"],
+  "include": [
+    "core/Clock.js",
+    "core/Path.js",
+    "render-loops/Scheduler.js",
+    "utilities/clamp.js",
+    "utilities/keyValueToArrays.js"
+  ],
   "exclude": [
     "node_modules",
     "dist"

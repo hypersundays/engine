@@ -22,7 +22,13 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
+
+/**
+ * @typedef {{ update: (time: number) => void }} Updateable
+ */
 
 /**
  * Shared scheduler used by render loops to register updateables and dispatch
@@ -31,6 +37,7 @@
  * @class Scheduler
  */
 function Scheduler() {
+    /** @type {Updateable[]} */
     this._updates = [];
 }
 
@@ -39,8 +46,7 @@ function Scheduler() {
  *
  * @method
  *
- * @param {Object} updateable object to be updated
- * @param {Function} updateable.update update function invoked by the scheduler
+ * @param {Updateable} updateable object to be updated
  *
  * @return {Scheduler} this
  */
@@ -56,7 +62,7 @@ Scheduler.prototype.update = function update(updateable) {
  *
  * @method
  *
- * @param {Object} updateable updateable object previously registered with `update`
+ * @param {Updateable} updateable object previously registered with `update`
  *
  * @return {Scheduler} this
  */

@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
@@ -90,7 +92,7 @@ var Path = {
      * @param {String} path the path
      * @param {Number} depth the breadth at which to find the index
      *
-     * @return {Number} index at the particular depth
+     * @return {Number|String|undefined} index at the particular depth
      */
     indexAtDepth: function indexAtDepth (path, depth) {
         var i = 0;
