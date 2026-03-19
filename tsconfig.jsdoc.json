@@ -14,6 +14,7 @@
   "include": [
     "core/Clock.js",
     "core/Path.js",
+    "renderers/inject-css.js",
     "render-loops/Scheduler.js",
     "render-loops/now.js",
     "utilities/loadURL.js",

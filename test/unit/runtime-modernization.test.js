@@ -80,6 +80,32 @@ describe('runtime modernization', function() {
         else global.cancelAnimationFrame = originalCAF;
     });
 
+    it('allows ContainerLoop to be constructed without a window event target', function() {
+        var originalAddEventListener = global.addEventListener;
+
+        delete global.addEventListener;
+        delete require.cache[require.resolve('../../render-loops/ContainerLoop')];
+
+        var ContainerLoop = require('../../render-loops/ContainerLoop');
+        var loop = new ContainerLoop();
+        var updates = [];
+
+        loop.update({
+            update: function(time) {
+                updates.push(time);
+            }
+        });
+
+        loop.step(42);
+
+        expect(updates).toEqual([42]);
+
+        delete require.cache[require.resolve('../../render-loops/ContainerLoop')];
+
+        if (originalAddEventListener === undefined) delete global.addEventListener;
+        else global.addEventListener = originalAddEventListener;
+    });
+
     it('prefers WebGL2 contexts before legacy fallbacks', function() {
         var calls = [];
         var renderer = {

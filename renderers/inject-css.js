@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 var css = '.famous-dom-renderer {' +

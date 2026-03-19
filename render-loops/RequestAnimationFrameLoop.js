@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 var polyfills = require('../polyfills');
@@ -58,6 +60,7 @@ function RequestAnimationFrameLoop() {
     // References to objects to be updated on next frame.
     this._scheduler = new Scheduler();
     this._updates = this._scheduler._updates;
+    this._running = false;
 
     this._looper = function(time) {
         _this.loop(time);

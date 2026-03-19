@@ -22,10 +22,13 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 var now = require('./now');
 var Scheduler = require('./Scheduler');
+var globalScope = typeof globalThis !== 'undefined' ? globalThis : {};
 
 /**
  * Loop class used for updating objects on a frame-by-frame. Synchronizes the
@@ -40,13 +43,16 @@ function ContainerLoop() {
     this._updates = this._scheduler._updates;
     this._stoppedAt = now();
     this._sleep = 0;
+    this._running = false;
 
     this.start();
 
     var _this = this;
-    window.addEventListener('message', function(ev) {
-        _this._onWindowMessage(ev);
-    });
+    if (typeof globalScope.addEventListener === 'function') {
+        globalScope.addEventListener('message', function(ev) {
+            _this._onWindowMessage(ev);
+        });
+    }
 }
 
 /**
@@ -62,7 +68,8 @@ function ContainerLoop() {
 ContainerLoop.prototype._onWindowMessage = function _onWindowMessage(ev) {
     if (
         this._running &&
-        ev.data.constructor === Array &&
+        ev &&
+        Array.isArray(ev.data) &&
         ev.data[0] === 'FRAME'
     ) {
         this.step(ev.data[1] - this._sleep);
