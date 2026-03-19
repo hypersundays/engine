@@ -39,6 +39,7 @@ var GeometryHelper = require('./GeometryHelper');
 var OBJLoader = {
     cached: {},
     requests: {},
+    requestHandles: {},
     formatText: format
 };
 
@@ -54,13 +55,14 @@ var OBJLoader = {
  * @param {Object}      options Options hash to that can affect the output of the OBJ
  *                              vertices.
  * @param {AbortSignal} [options.signal] Optional abort signal forwarded to asset loading.
- * @return {undefined} undefined
+ * @return {*} cached buffers, or the in-flight request handle created by the
+ *             modernized asset loader
  */
 OBJLoader.load = function load(url, cb, options) {
     if (!this.cached[url]) {
         if (!this.requests[url]) {
             this.requests[url] = [cb];
-            loadURL(
+            this.requestHandles[url] = loadURL(
                 url,
                 this._onsuccess.bind(
                     this,
@@ -75,9 +77,11 @@ OBJLoader.load = function load(url, cb, options) {
         else {
             this.requests[url].push(cb);
         }
+        return this.requestHandles[url];
     }
     else {
         cb(this.cached[url]);
+        return this.cached[url];
     }
 };
 
@@ -103,6 +107,7 @@ OBJLoader._onsuccess = function _onsuccess(url, options, text) {
     }
 
     this.requests[url] = null;
+    this.requestHandles[url] = null;
 };
 
 /*

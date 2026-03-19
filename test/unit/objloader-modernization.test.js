@@ -7,7 +7,8 @@ describe('OBJ loader modernization', function() {
         var originalLoadURLModule = require.cache[loadURLPath];
         var originalOBJLoaderModule = require.cache[objLoaderPath];
         var signal = { aborted: false };
-        var loadURL = vi.fn();
+        var requestHandle = { kind: 'request-handle' };
+        var loadURL = vi.fn().mockReturnValue(requestHandle);
 
         require.cache[loadURLPath] = {
             id: loadURLPath,
@@ -19,11 +20,12 @@ describe('OBJ loader modernization', function() {
 
         var OBJLoader = require('../../webgl-geometries/OBJLoader');
 
-        OBJLoader.load('mesh.obj', function() {}, {
+        var returnedHandle = OBJLoader.load('mesh.obj', function() {}, {
             computeNormals: true,
             signal: signal
         });
 
+        expect(returnedHandle).toBe(requestHandle);
         expect(loadURL).toHaveBeenCalledWith(
             'mesh.obj',
             expect.any(Function),
@@ -36,5 +38,18 @@ describe('OBJ loader modernization', function() {
         else delete require.cache[loadURLPath];
 
         if (originalOBJLoaderModule) require.cache[objLoaderPath] = originalOBJLoaderModule;
+    });
+
+    it('returns cached geometry immediately for repeated loads', function() {
+        var OBJLoader = require('../../webgl-geometries/OBJLoader');
+        var cachedGeometry = { vertices: [1, 2, 3] };
+        var callback = vi.fn();
+
+        OBJLoader.cached['cached.obj'] = cachedGeometry;
+
+        expect(OBJLoader.load('cached.obj', callback)).toBe(cachedGeometry);
+        expect(callback).toHaveBeenCalledWith(cachedGeometry);
+
+        delete OBJLoader.cached['cached.obj'];
     });
 });
