@@ -48,11 +48,30 @@ npm install famous
 
 This will add the Famous Engine to your node_modules folder to be included into your project.
 
+## Development
+
+The repository now ships with a modern Node 20+ toolchain for building, linting, testing, and validating the package surface.
+
+```bash
+npm install
+npm run build
+npm run lint
+npm run typecheck
+npm test
+```
+
+To validate the browser demo against the packaged ESM output:
+
+```bash
+npm run demo:build
+npm run demo:preview
+```
+
 ## Contributing
 
 Cloning this repository directly is primarily for those wishing to contribute to our codebase. Check out our [contributing instructions][contributing] to get involved.
 
-Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html.  Currently we have a dependency on glslify, a browserify transform to compile our glsl shaders.
+Note: cloning only provides the Famo.us folder with all Famo.us code, but it does no application scaffolding. You will additionally need to create your own index.html. Shader compilation is handled by the Vite-based build pipeline.
 
 ## Documentation
 

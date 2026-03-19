@@ -1,23 +1,18 @@
 const path = require('path');
 const { defineConfig } = require('vite');
-const commonjs = require('@rollup/plugin-commonjs');
+
+const packageDist = path.resolve(__dirname, '..', 'dist', 'esm');
 
 module.exports = defineConfig({
   root: __dirname,
-  plugins: [
-    commonjs({
-      include: [/engine/],
-      transformMixedEsModules: true
-    })
-  ],
   resolve: {
     alias: {
-      famous: path.resolve(__dirname, '..')
+      famous: packageDist
     }
   },
   server: {
     port: 5173,
-    open: true
+    open: false
   },
   build: {
     outDir: 'dist',

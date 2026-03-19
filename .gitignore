@@ -1,4 +1,8 @@
 node_modules/
 .DS_Store
-dist/*.js
+dist/
 *.log
+coverage/
+playwright-report/
+test-results/
+.tmp-types/

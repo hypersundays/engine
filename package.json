@@ -1,32 +1,243 @@
 {
   "name": "famous",
   "version": "0.7.1",
-  "description": "",
-  "main": "index.js",
+  "description": "Modernized Famous rendering engine package",
+  "main": "./dist/cjs/index.cjs",
+  "module": "./dist/esm/index.js",
+  "types": "./dist/types/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/types/index.d.ts",
+      "import": "./dist/esm/index.js",
+      "require": "./dist/cjs/index.cjs"
+    },
+    "./package.json": "./package.json",
+    "./components": {
+      "types": "./dist/types/components/index.d.ts",
+      "import": "./dist/esm/components/index.js",
+      "require": "./dist/cjs/components/index.cjs"
+    },
+    "./components/*": {
+      "types": "./dist/types/components/*.d.ts",
+      "import": "./dist/esm/components/*.js",
+      "require": "./dist/cjs/components/*.cjs"
+    },
+    "./core": {
+      "types": "./dist/types/core/index.d.ts",
+      "import": "./dist/esm/core/index.js",
+      "require": "./dist/cjs/core/index.cjs"
+    },
+    "./core/*": {
+      "types": "./dist/types/core/*.d.ts",
+      "import": "./dist/esm/core/*.js",
+      "require": "./dist/cjs/core/*.cjs"
+    },
+    "./dom-renderables": {
+      "types": "./dist/types/dom-renderables/index.d.ts",
+      "import": "./dist/esm/dom-renderables/index.js",
+      "require": "./dist/cjs/dom-renderables/index.cjs"
+    },
+    "./dom-renderables/*": {
+      "types": "./dist/types/dom-renderables/*.d.ts",
+      "import": "./dist/esm/dom-renderables/*.js",
+      "require": "./dist/cjs/dom-renderables/*.cjs"
+    },
+    "./dom-renderers": {
+      "types": "./dist/types/dom-renderers/index.d.ts",
+      "import": "./dist/esm/dom-renderers/index.js",
+      "require": "./dist/cjs/dom-renderers/index.cjs"
+    },
+    "./dom-renderers/*": {
+      "types": "./dist/types/dom-renderers/*.d.ts",
+      "import": "./dist/esm/dom-renderers/*.js",
+      "require": "./dist/cjs/dom-renderers/*.cjs"
+    },
+    "./dom-renderers/events": {
+      "types": "./dist/types/dom-renderers/events/index.d.ts",
+      "import": "./dist/esm/dom-renderers/events/index.js",
+      "require": "./dist/cjs/dom-renderers/events/index.cjs"
+    },
+    "./dom-renderers/events/*": {
+      "types": "./dist/types/dom-renderers/events/*.d.ts",
+      "import": "./dist/esm/dom-renderers/events/*.js",
+      "require": "./dist/cjs/dom-renderers/events/*.cjs"
+    },
+    "./math": {
+      "types": "./dist/types/math/index.d.ts",
+      "import": "./dist/esm/math/index.js",
+      "require": "./dist/cjs/math/index.cjs"
+    },
+    "./math/*": {
+      "types": "./dist/types/math/*.d.ts",
+      "import": "./dist/esm/math/*.js",
+      "require": "./dist/cjs/math/*.cjs"
+    },
+    "./physics": {
+      "types": "./dist/types/physics/index.d.ts",
+      "import": "./dist/esm/physics/index.js",
+      "require": "./dist/cjs/physics/index.cjs"
+    },
+    "./physics/*": {
+      "types": "./dist/types/physics/*.d.ts",
+      "import": "./dist/esm/physics/*.js",
+      "require": "./dist/cjs/physics/*.cjs"
+    },
+    "./physics/bodies/*": {
+      "types": "./dist/types/physics/bodies/*.d.ts",
+      "import": "./dist/esm/physics/bodies/*.js",
+      "require": "./dist/cjs/physics/bodies/*.cjs"
+    },
+    "./physics/constraints/*": {
+      "types": "./dist/types/physics/constraints/*.d.ts",
+      "import": "./dist/esm/physics/constraints/*.js",
+      "require": "./dist/cjs/physics/constraints/*.cjs"
+    },
+    "./physics/constraints/collision/*": {
+      "types": "./dist/types/physics/constraints/collision/*.d.ts",
+      "import": "./dist/esm/physics/constraints/collision/*.js",
+      "require": "./dist/cjs/physics/constraints/collision/*.cjs"
+    },
+    "./physics/forces/*": {
+      "types": "./dist/types/physics/forces/*.d.ts",
+      "import": "./dist/esm/physics/forces/*.js",
+      "require": "./dist/cjs/physics/forces/*.cjs"
+    },
+    "./polyfills": {
+      "types": "./dist/types/polyfills/index.d.ts",
+      "import": "./dist/esm/polyfills/index.js",
+      "require": "./dist/cjs/polyfills/index.cjs"
+    },
+    "./polyfills/*": {
+      "types": "./dist/types/polyfills/*.d.ts",
+      "import": "./dist/esm/polyfills/*.js",
+      "require": "./dist/cjs/polyfills/*.cjs"
+    },
+    "./renderers": {
+      "types": "./dist/types/renderers/index.d.ts",
+      "import": "./dist/esm/renderers/index.js",
+      "require": "./dist/cjs/renderers/index.cjs"
+    },
+    "./renderers/*": {
+      "types": "./dist/types/renderers/*.d.ts",
+      "import": "./dist/esm/renderers/*.js",
+      "require": "./dist/cjs/renderers/*.cjs"
+    },
+    "./render-loops": {
+      "types": "./dist/types/render-loops/index.d.ts",
+      "import": "./dist/esm/render-loops/index.js",
+      "require": "./dist/cjs/render-loops/index.cjs"
+    },
+    "./render-loops/*": {
+      "types": "./dist/types/render-loops/*.d.ts",
+      "import": "./dist/esm/render-loops/*.js",
+      "require": "./dist/cjs/render-loops/*.cjs"
+    },
+    "./transitions": {
+      "types": "./dist/types/transitions/index.d.ts",
+      "import": "./dist/esm/transitions/index.js",
+      "require": "./dist/cjs/transitions/index.cjs"
+    },
+    "./transitions/*": {
+      "types": "./dist/types/transitions/*.d.ts",
+      "import": "./dist/esm/transitions/*.js",
+      "require": "./dist/cjs/transitions/*.cjs"
+    },
+    "./utilities": {
+      "types": "./dist/types/utilities/index.d.ts",
+      "import": "./dist/esm/utilities/index.js",
+      "require": "./dist/cjs/utilities/index.cjs"
+    },
+    "./utilities/*": {
+      "types": "./dist/types/utilities/*.d.ts",
+      "import": "./dist/esm/utilities/*.js",
+      "require": "./dist/cjs/utilities/*.cjs"
+    },
+    "./webgl-geometries": {
+      "types": "./dist/types/webgl-geometries/index.d.ts",
+      "import": "./dist/esm/webgl-geometries/index.js",
+      "require": "./dist/cjs/webgl-geometries/index.cjs"
+    },
+    "./webgl-geometries/*": {
+      "types": "./dist/types/webgl-geometries/*.d.ts",
+      "import": "./dist/esm/webgl-geometries/*.js",
+      "require": "./dist/cjs/webgl-geometries/*.cjs"
+    },
+    "./webgl-geometries/primitives/*": {
+      "types": "./dist/types/webgl-geometries/primitives/*.d.ts",
+      "import": "./dist/esm/webgl-geometries/primitives/*.js",
+      "require": "./dist/cjs/webgl-geometries/primitives/*.cjs"
+    },
+    "./webgl-materials": {
+      "types": "./dist/types/webgl-materials/index.d.ts",
+      "import": "./dist/esm/webgl-materials/index.js",
+      "require": "./dist/cjs/webgl-materials/index.cjs"
+    },
+    "./webgl-materials/*": {
+      "types": "./dist/types/webgl-materials/*.d.ts",
+      "import": "./dist/esm/webgl-materials/*.js",
+      "require": "./dist/cjs/webgl-materials/*.cjs"
+    },
+    "./webgl-renderables": {
+      "types": "./dist/types/webgl-renderables/index.d.ts",
+      "import": "./dist/esm/webgl-renderables/index.js",
+      "require": "./dist/cjs/webgl-renderables/index.cjs"
+    },
+    "./webgl-renderables/*": {
+      "types": "./dist/types/webgl-renderables/*.d.ts",
+      "import": "./dist/esm/webgl-renderables/*.js",
+      "require": "./dist/cjs/webgl-renderables/*.cjs"
+    },
+    "./webgl-renderables/lights/*": {
+      "types": "./dist/types/webgl-renderables/lights/*.d.ts",
+      "import": "./dist/esm/webgl-renderables/lights/*.js",
+      "require": "./dist/cjs/webgl-renderables/lights/*.cjs"
+    },
+    "./webgl-renderers": {
+      "types": "./dist/types/webgl-renderers/index.d.ts",
+      "import": "./dist/esm/webgl-renderers/index.js",
+      "require": "./dist/cjs/webgl-renderers/index.cjs"
+    },
+    "./webgl-renderers/*": {
+      "types": "./dist/types/webgl-renderers/*.d.ts",
+      "import": "./dist/esm/webgl-renderers/*.js",
+      "require": "./dist/cjs/webgl-renderers/*.cjs"
+    },
+    "./webgl-shaders": {
+      "types": "./dist/types/webgl-shaders/index.d.ts",
+      "import": "./dist/esm/webgl-shaders/index.js",
+      "require": "./dist/cjs/webgl-shaders/index.cjs"
+    },
+    "./webgl-shaders/*": {
+      "types": "./dist/types/webgl-shaders/*.d.ts",
+      "import": "./dist/esm/webgl-shaders/*.js",
+      "require": "./dist/cjs/webgl-shaders/*.cjs"
+    }
+  },
+  "files": [
+    "dist",
+    "glsl.d.ts",
+    "README.md",
+    "LICENSE",
+    "AUTHORS.md",
+    "CHANGELOG.md"
+  ],
+  "engines": {
+    "node": ">=20"
+  },
   "scripts": {
-    "tape": "tap-closer | smokestack -b firefox | tap-spec",
-    "test-new": "node ./scripts/test.js ./core/**/*.spec.js",
-    "test-components": "browserify components/test/*.js | npm run tape",
-    "test-core": "npm run test-new",
-    "test-dom-renderables": "browserify dom-renderables/test/*.js | npm run tape",
-    "test-dom-renderers": "browserify dom-renderers/test/*.js | npm run tape",
-    "test-render-loops": "browserify render-loops/test/*.js | npm run tape",
-    "test-math": "browserify math/test/*.js | npm run tape",
-    "test-physics": "browserify physics/test/*.js physics/test/*/*.js | npm run tape",
-    "test-polyfills": "browserify polyfills/test/*.js | npm run tape",
-    "test-renderers": "browserify renderers/test/*.js | npm run tape",
-    "test-transitions": "browserify transitions/test/*.js | npm run tape",
-    "test-utilities": "browserify utilities/test/*.js | npm run tape",
-    "test-webgl-geometries": "browserify webgl-geometries/test/*.js | npm run tape",
-    "test-webgl-materials": "browserify webgl-materials/test/*.js | npm run tape",
-    "test-webgl-renderables": "browserify webgl-renderables/test/*.js | npm run tape",
-    "test-webgl-renderers": "browserify webgl-renderers/test/*.js | npm run tape",
-    "test": "EXIT_STATUS=0; npm run test-components || EXIT_STATUS=$?; npm run test-core || EXIT_STATUS=$?; npm run test-dom-renderables || EXIT_STATUS=$?; npm run test-dom-renderers || EXIT_STATUS=$?; npm run test-render-loops || EXIT_STATUS=$?; npm run test-math || EXIT_STATUS=$?; npm run test-physics || EXIT_STATUS=$?; npm run test-polyfills || EXIT_STATUS=$?; npm run test-renderers || EXIT_STATUS=$?; npm run test-transitions || EXIT_STATUS=$?; npm run test-utilities || EXIT_STATUS=$?; npm run test-webgl-geometries || EXIT_STATUS=$?; npm run test-webgl-materials || EXIT_STATUS=$?; npm run test-webgl-renderables || EXIT_STATUS=$?; npm run test-webgl-renderers; exit $EXIT_STATUS",
-    "check-jsdoc": "eslint --reset --no-eslintrc --rule 'valid-jsdoc: 2' --ignore-path .gitignore .",
-    "lint": "eslint --ignore-path .gitignore .",
-    "build": "npm run build-debug && npm run build-min",
-    "build-debug": "browserify index.js -d --standalone famous > dist/famous.js",
-    "build-min": "browserify index.js --standalone famous | uglifyjs --screw-ie8 -m -c dead_code,sequences,conditionals,booleans,unused,if_return,join_vars,drop_debugger > dist/famous.min.js"
+    "clean": "rm -rf dist coverage playwright-report test-results",
+    "build": "npm run clean && vite build && npm run build:types",
+    "build:types": "node ./scripts/build-types.js",
+    "demo:dev": "npm run build && vite --config demo/vite.config.js",
+    "demo:build": "npm run build && vite build --config demo/vite.config.js",
+    "demo:preview": "vite preview --config demo/vite.config.js",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "test": "npm run test:unit && npm run test:browser",
+    "test:unit": "vitest run",
+    "test:browser": "playwright test",
+    "typecheck": "npm run build:types && tsc -p tsconfig.json --noEmit"
   },
   "repository": {
     "type": "git",
@@ -35,25 +246,17 @@
   "author": "Famous",
   "license": "MIT",
   "devDependencies": {
-    "browserify": "^10.2.1",
-    "colors": "^1.1.0",
-    "eslint": "^0.21.2",
-    "glob": "^5.0.10",
-    "istanbul": "^0.3.15",
-    "rewire": "^2.3.3",
-    "sinon": "^1.14.1",
-    "smokestack": "^3.2.2",
-    "tap-closer": "^1.0.0",
-    "tape": "^4.0.0",
-    "tap-spec": "^4.0.0",
-    "uglify-js": "^2.4.17"
-  },
-  "dependencies": {
-    "glslify": "^2.0.0"
-  },
-  "browserify": {
-    "transform": [
-      "glslify"
-    ]
+    "@eslint/js": "^10.0.1",
+    "@playwright/test": "^1.58.2",
+    "@rollup/plugin-commonjs": "^29.0.2",
+    "eslint": "^10.0.3",
+    "eslint-config-prettier": "^10.1.8",
+    "globals": "^17.4.0",
+    "jsdom": "^29.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "^5.9.3",
+    "vite": "^6.4.1",
+    "vite-plugin-glslify": "^2.3.0",
+    "vitest": "^4.1.0"
   }
 }

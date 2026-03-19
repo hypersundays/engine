@@ -1,13 +1,28 @@
 import './style.css';
 
-import FamousEngine from 'famous/core/FamousEngine';
-import DOMElement from 'famous/dom-renderables/DOMElement';
-import Rotation from 'famous/components/Rotation';
-import PhysicsEngine from 'famous/physics/PhysicsEngine';
-import Particle from 'famous/physics/bodies/Particle';
-import Spring from 'famous/physics/forces/Spring';
-import Drag from 'famous/physics/forces/Drag';
-import Vec3 from 'famous/math/Vec3';
+import * as FamousEngineModule from 'famous/core/FamousEngine';
+import * as DOMElementModule from 'famous/dom-renderables/DOMElement';
+import * as RotationModule from 'famous/components/Rotation';
+import * as PhysicsEngineModule from 'famous/physics/PhysicsEngine';
+import * as ParticleModule from 'famous/physics/bodies/Particle';
+import * as SpringModule from 'famous/physics/forces/Spring';
+import * as DragModule from 'famous/physics/forces/Drag';
+import * as Vec3Module from 'famous/math/Vec3';
+
+const resolveCommonJS = (moduleNamespace) => (
+  Object.prototype.hasOwnProperty.call(moduleNamespace, 'default')
+    ? moduleNamespace.default
+    : moduleNamespace
+);
+
+const FamousEngine = resolveCommonJS(FamousEngineModule);
+const DOMElement = resolveCommonJS(DOMElementModule);
+const Rotation = resolveCommonJS(RotationModule);
+const PhysicsEngine = resolveCommonJS(PhysicsEngineModule);
+const Particle = resolveCommonJS(ParticleModule);
+const Spring = resolveCommonJS(SpringModule);
+const Drag = resolveCommonJS(DragModule);
+const Vec3 = resolveCommonJS(Vec3Module);
 
 FamousEngine.init();
 
