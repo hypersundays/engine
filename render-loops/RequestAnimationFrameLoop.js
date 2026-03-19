@@ -32,6 +32,10 @@ var rAF = polyfills.requestAnimationFrame;
 var cAF = polyfills.cancelAnimationFrame;
 
 /**
+ * @typedef {{ update: (time: number) => void }} Updateable
+ */
+
+/**
  * Boolean constant indicating whether the RequestAnimationFrameLoop has access
  * to the document. The document is being used in order to subscribe for
  * visibilitychange events used for normalizing the RequestAnimationFrameLoop
@@ -62,7 +66,7 @@ function RequestAnimationFrameLoop() {
     this._updates = this._scheduler._updates;
     this._running = false;
 
-    this._looper = function(time) {
+    this._looper = function(/** @type {number} */ time) {
         _this.loop(time);
     };
     this._time = 0;
@@ -95,12 +99,10 @@ function RequestAnimationFrameLoop() {
  * Handle the switching of tabs.
  *
  * @method
- * @private
- *
  * @return {undefined} undefined
  */
 RequestAnimationFrameLoop.prototype._onVisibilityChange = function _onVisibilityChange() {
-    if (document[VENDOR_HIDDEN]) {
+    if ((/** @type {any} */ (document))[VENDOR_HIDDEN]) {
         this._onUnfocus();
     }
     else {
@@ -113,8 +115,6 @@ RequestAnimationFrameLoop.prototype._onVisibilityChange = function _onVisibility
  * focused after a visibiltiy change.
  *
  * @method
- * @private
- *
  * @return {undefined} undefined
  */
 RequestAnimationFrameLoop.prototype._onFocus = function _onFocus() {
@@ -128,8 +128,6 @@ RequestAnimationFrameLoop.prototype._onFocus = function _onFocus() {
  * unfocused (hidden) after a visibiltiy change.
  *
  * @method  _onFocus
- * @private
- *
  * @return {undefined} undefined
  */
 RequestAnimationFrameLoop.prototype._onUnfocus = function _onUnfocus() {
@@ -158,14 +156,12 @@ RequestAnimationFrameLoop.prototype.start = function start() {
  * behavior on visibilty change.
  *
  * @method
- * @private
-*
  * @return {undefined} undefined
  */
 RequestAnimationFrameLoop.prototype._start = function _start() {
     this._running = true;
     this._sleepDiff = true;
-    this._rAF = rAF(this._looper);
+    this._rAF = /** @type {(cb: (time: number) => void) => number} */ (rAF)(this._looper);
 };
 
 /**
@@ -189,8 +185,6 @@ RequestAnimationFrameLoop.prototype.stop = function stop() {
  * behavior on visibilty change.
  *
  * @method
- * @private
- *
  * @return {undefined} undefined
  */
 RequestAnimationFrameLoop.prototype._stop = function _stop() {
@@ -198,7 +192,7 @@ RequestAnimationFrameLoop.prototype._stop = function _stop() {
     this._stoppedAt = this._time;
 
     // Bug in old versions of Fx. Explicitly cancel.
-    cAF(this._rAF);
+    /** @type {(requestId: number) => void} */ (cAF)(/** @type {number} */ (this._rAF));
 };
 
 /**
@@ -249,7 +243,7 @@ RequestAnimationFrameLoop.prototype.step = function step (time) {
  */
 RequestAnimationFrameLoop.prototype.loop = function loop(time) {
     this.step(time);
-    this._rAF = rAF(this._looper);
+    this._rAF = /** @type {(cb: (time: number) => void) => number} */ (rAF)(this._looper);
     return this;
 };
 
@@ -260,9 +254,7 @@ RequestAnimationFrameLoop.prototype.loop = function loop(time) {
  *
  * @method
  *
- * @param {Object} updateable object to be updated
- * @param {Function} updateable.update update function to be called on the
- * registered object
+ * @param {Updateable} updateable object to be updated
  *
  * @return {RequestAnimationFrameLoop} this
  */
@@ -277,7 +269,7 @@ RequestAnimationFrameLoop.prototype.update = function update(updateable) {
  *
  * @method
  *
- * @param {Object} updateable updateable object previously registered using
+ * @param {Updateable} updateable updateable object previously registered using
  * `update`
  *
  * @return {RequestAnimationFrameLoop} this

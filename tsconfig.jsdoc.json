@@ -18,6 +18,7 @@
     "core/Event.js",
     "core/Path.js",
     "render-loops/ContainerLoop.js",
+    "render-loops/RequestAnimationFrameLoop.js",
     "renderers/inject-css.js",
     "render-loops/Scheduler.js",
     "render-loops/now.js",
