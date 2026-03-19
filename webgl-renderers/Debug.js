@@ -85,9 +85,20 @@ function _processErrors(errors, source) {
     while ((m = re.exec(errors)) != null) {
         if (m.index === re.lastIndex) re.lastIndex++;
         var li = document.createElement('li');
-        var code = '<p><span>ERROR</span> "' + m[2] + '" in line ' + m[1] + '</p>';
-        code += '<p><b>' + lines[m[1] - 1].replace(/^[ \t]+/g, '') + '</b></p>';
-        li.innerHTML = code;
+        var message = document.createElement('p');
+        var label = document.createElement('span');
+        var code = document.createElement('p');
+        var codeLine = document.createElement('b');
+
+        label.textContent = 'ERROR';
+        message.appendChild(label);
+        message.appendChild(document.createTextNode(' "' + m[2] + '" in line ' + m[1]));
+
+        codeLine.textContent = lines[m[1] - 1].replace(/^[ \t]+/g, '');
+        code.appendChild(codeLine);
+
+        li.appendChild(message);
+        li.appendChild(code);
         report.appendChild(li);
     }
 }
