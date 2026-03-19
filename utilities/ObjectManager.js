@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
@@ -39,6 +41,7 @@ var ObjectManager = {};
  * @type {Object}
  * @private
  */
+/** @type {{ [type: string]: unknown[] }} */
 ObjectManager.pools = {};
 
 /**
@@ -46,26 +49,39 @@ ObjectManager.pools = {};
  *
  * @method register
  *
+ * @template T
  * @param {String} type             Unique object "type" to identity pools of
  *                                  allocated objects.
- * @param {Function} Constructor    Zero-argument Constructor function used for
+ * @param {new () => T} Constructor Zero-argument Constructor function used for
  *                                  allocating new objects.
  * @return {undefined} undefined
  */
 ObjectManager.register = function(type, Constructor) {
-    var pool = this.pools[type] = [];
+    /** @type {unknown[]} */
+    var pool = ObjectManager.pools[type] = [];
 
-    this['request' + type] = _request(pool, Constructor);
-    this['free' + type] = _free(pool);
+    /** @type {any} */ (ObjectManager)['request' + type] = _request(/** @type {T[]} */ (pool), Constructor);
+    /** @type {any} */ (ObjectManager)['free' + type] = _free(/** @type {T[]} */ (pool));
 };
 
+/**
+ * @template T
+ * @param {T[]} pool
+ * @param {new () => T} Constructor
+ * @return {() => T}
+ */
 function _request(pool, Constructor) {
     return function request() {
-        if (pool.length !== 0) return pool.pop();
+        if (pool.length !== 0) return /** @type {T} */ (pool.pop());
         else return new Constructor();
     };
 }
 
+/**
+ * @template T
+ * @param {T[]} pool
+ * @return {(obj: T) => void}
+ */
 function _free(pool) {
     return function free(obj) {
         pool.push(obj);

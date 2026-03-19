@@ -22,15 +22,19 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
  * A lightweight, featureless EventEmitter.
  *
  * @class CallbackStore
+ * @template T
  * @constructor
  */
 function CallbackStore () {
+    /** @type {{ [key: string]: Array<(payload: T) => void> }} */
     this._events = {};
 }
 
@@ -41,7 +45,7 @@ function CallbackStore () {
  * @chainable
  *
  * @param  {String}   key       The event type (e.g. `click`).
- * @param  {Function} callback  A callback function to be invoked whenever `key`
+ * @param  {(payload: T) => void} callback  A callback function to be invoked whenever `key`
  *                              event is being triggered.
  * @return {Function} destroy   A function to call if you want to remove the
  *                              callback.
@@ -63,9 +67,9 @@ CallbackStore.prototype.on = function on (key, callback) {
  *
  * @param  {String} key         The event type from which the callback function
  *                              should be removed.
- * @param  {Function} callback  The callback function to be removed from the
+ * @param  {(payload: T) => void} callback  The callback function to be removed from the
  *                              listeners for key.
- * @return {CallbackStore} this
+ * @return {CallbackStore<T>} this
  */
 CallbackStore.prototype.off = function off (key, callback) {
     var events = this._events[key];
@@ -80,8 +84,8 @@ CallbackStore.prototype.off = function off (key, callback) {
  * @chainable
  *
  * @param  {String}        key      The event type.
- * @param  {Object}        payload  The event payload (event object).
- * @return {CallbackStore} this
+ * @param  {T}             payload  The event payload (event object).
+ * @return {CallbackStore<T>} this
  */
 CallbackStore.prototype.trigger = function trigger (key, payload) {
     var events = this._events[key];

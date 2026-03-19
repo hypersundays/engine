@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
@@ -52,7 +54,7 @@ function strip(obj) {
             return obj;
         case Object:
             for (var key in obj) {
-                var stripped = strip(obj[key], true);
+                var stripped = strip(obj[key]);
                 obj[key] = stripped;
             }
             return obj;

@@ -22,6 +22,8 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
@@ -29,27 +31,28 @@
  *
  * @method  clone
  *
- * @param {Object} b       Object to be cloned.
- * @return {Object} a      Cloned object (deep equality).
+ * @param {*} b            Object to be cloned.
+ * @return {*} a           Cloned object (deep equality).
  */
 var clone = function clone(b) {
+    /** @type {any} */
     var a;
     if (typeof b === 'object') {
         a = (b instanceof Array) ? [] : {};
         for (var key in b) {
-            if (typeof b[key] === 'object' && b[key] !== null) {
-                if (b[key] instanceof Array) {
-                    a[key] = new Array(b[key].length);
-                    for (var i = 0; i < b[key].length; i++) {
-                        a[key][i] = clone(b[key][i]);
+            if (typeof /** @type {any} */ (b)[key] === 'object' && /** @type {any} */ (b)[key] !== null) {
+                if ((/** @type {any} */ (b)[key]) instanceof Array) {
+                    a[key] = new Array((/** @type {any} */ (b)[key]).length);
+                    for (var i = 0; i < (/** @type {any} */ (b)[key]).length; i++) {
+                        a[key][i] = clone((/** @type {any} */ (b)[key][i]));
                     }
                 }
                 else {
-                  a[key] = clone(b[key]);
+                  a[key] = clone((/** @type {any} */ (b)[key]));
                 }
             }
             else {
-                a[key] = b[key];
+                a[key] = (/** @type {any} */ (b)[key]);
             }
         }
     }
