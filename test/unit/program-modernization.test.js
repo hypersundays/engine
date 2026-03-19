@@ -64,7 +64,7 @@ describe('program modernization', function() {
         expect(webgl2Program.applyShaderLanguageSettings(
             'gl_FragColor = texture2D(tex, uv); transpose(mat4(1.0)); inverse(mat4(1.0));',
             'fragment'
-        )).toContain('fa_fragColor = texture(tex, uv); fa_transpose(mat4(1.0)); fa_inverse(mat4(1.0));');
+        )).toContain('fa_fragColor = texture(tex, uv); transpose(mat4(1.0)); inverse(mat4(1.0));');
         expect(webgl2Program.applyShaderLanguageSettings(
             '#fa_fragment_color = #fa_texture_sample(tex, uv);',
             'fragment'

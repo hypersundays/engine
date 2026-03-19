@@ -272,9 +272,7 @@ Program.prototype.applyShaderLanguageSettings = function applyShaderLanguageSett
     if (settings.versionLine) {
         source = source
             .replace(/\btexture2D\s*\(/g, 'texture(')
-            .replace(/\bgl_FragColor\b/g, settings.fragmentColorTarget)
-            .replace(/\binverse\s*\(/g, 'fa_inverse(')
-            .replace(/\btranspose\s*\(/g, 'fa_transpose(');
+            .replace(/\bgl_FragColor\b/g, settings.fragmentColorTarget);
     }
 
     return source
