@@ -23,9 +23,12 @@
  */
 'use strict';
 
+var globalScope = typeof globalThis !== 'undefined' ? globalThis : {};
+var performanceRef = globalScope.performance;
+
 // Polyfill for performance.now()
-var now = (window.performance && window.performance.now) ? function() {
-    return window.performance.now();
+var now = (performanceRef && performanceRef.now) ? function() {
+    return performanceRef.now.call(performanceRef);
 } : Date.now;
 
 module.exports = now;

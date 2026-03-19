@@ -63,7 +63,8 @@ module.exports = [
             globals: {
                 describe: 'readonly',
                 expect: 'readonly',
-                it: 'readonly'
+                it: 'readonly',
+                vi: 'readonly'
             }
         }
     }

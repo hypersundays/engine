@@ -32,10 +32,29 @@
  *
  * @param {String} url URL of object
  * @param {Function} callback callback to dispatch with content
+ * @param {Object} [options] request options
+ * @param {AbortSignal} [options.signal] abort signal forwarded to `fetch`
  *
- * @return {undefined} undefined
+ * @return {Promise<String>|XMLHttpRequest} promise resolving to response text
+ *                                          when `fetch` is available, otherwise
+ *                                          the in-flight `XMLHttpRequest`.
  */
-var loadURL = function loadURL(url, callback) {
+var loadURL = function loadURL(url, callback, options) {
+    options = options || {};
+
+    if (typeof fetch === 'function') {
+        return fetch(url, {
+            signal: options.signal
+        })
+            .then(function(response) {
+                return response.text();
+            })
+            .then(function(text) {
+                if (callback) callback(text);
+                return text;
+            });
+    }
+
     var xhr = new XMLHttpRequest();
     xhr.onreadystatechange = function onreadystatechange() {
         if (this.readyState === 4) {
@@ -44,6 +63,7 @@ var loadURL = function loadURL(url, callback) {
     };
     xhr.open('GET', url);
     xhr.send();
+    return xhr;
 };
 
 module.exports = loadURL;
