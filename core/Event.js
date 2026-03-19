@@ -22,12 +22,15 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
 /**
  * The Event class adds the stopPropagation functionality
  * to the UIEvents within the scene graph.
  *
+ * @class Event
  * @constructor Event
  */
 function Event () {
@@ -41,6 +44,7 @@ function Event () {
  *
  * @method stopPropagation
  *
+ * @this {{ propagationStopped: boolean }}
  * @return {undefined} undefined
  */
 function stopPropagation () {
