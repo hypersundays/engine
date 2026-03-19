@@ -4,6 +4,12 @@ var expect = require('@playwright/test').expect;
 var test = require('@playwright/test').test;
 
 test('demo renders the baseline scene and animates nodes', async function ({ page }) {
+    var pageErrors = [];
+
+    page.on('pageerror', function(error) {
+        pageErrors.push(error.message);
+    });
+
     await page.goto('/');
 
     await page.waitForFunction(function() {
@@ -37,4 +43,5 @@ test('demo renders the baseline scene and animates nodes', async function ({ pag
     expect(after.some(function(transform, index) {
         return transform !== before[index];
     })).toBe(true);
+    expect(pageErrors).toEqual([]);
 });
