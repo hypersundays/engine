@@ -22,7 +22,13 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
+
+/**
+ * @typedef {{ signal?: AbortSignal }} LoadURLOptions
+ */
 
 /**
  * Load a URL and return its contents in a callback.
@@ -31,11 +37,11 @@
  * @memberof Utilities
  *
  * @param {String} url URL of object
- * @param {Function} callback callback to dispatch with content
- * @param {Object} [options] request options
- * @param {AbortSignal} [options.signal] abort signal forwarded to `fetch`
+ * @param {(text: string) => void} [callback] callback to dispatch with content
+ * @param {LoadURLOptions} [options] request options, including an optional
+ *                                   abort signal forwarded to `fetch`
  *
- * @return {Promise<String>|XMLHttpRequest} promise resolving to response text
+ * @return {Promise<string>|XMLHttpRequest} promise resolving to response text
  *                                          when `fetch` is available, otherwise
  *                                          the in-flight `XMLHttpRequest`.
  */

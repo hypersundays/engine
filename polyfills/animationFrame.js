@@ -3,14 +3,19 @@
 // requestAnimationFrame polyfill by Erik Möller. fixes from Paul Irish and Tino Zijdel
 // MIT license
 
+// @ts-check
+
 'use strict';
 
 var lastTime = 0;
+/** @type {Partial<typeof globalThis>} */
 var globalScope = typeof globalThis !== 'undefined' ? globalThis : {};
 
+/** @type {typeof globalThis.requestAnimationFrame | null} */
 var rAF = typeof globalScope.requestAnimationFrame === 'function'
     ? globalScope.requestAnimationFrame.bind(globalScope)
     : null;
+/** @type {typeof globalThis.cancelAnimationFrame | null} */
 var cAF = typeof globalScope.cancelAnimationFrame === 'function'
     ? globalScope.cancelAnimationFrame.bind(globalScope)
     : null;

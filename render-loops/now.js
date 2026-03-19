@@ -21,14 +21,23 @@
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
  * THE SOFTWARE.
  */
+
+// @ts-check
+
 'use strict';
 
+/** @type {Partial<typeof globalThis>} */
 var globalScope = typeof globalThis !== 'undefined' ? globalThis : {};
 var performanceRef = globalScope.performance;
 
 // Polyfill for performance.now()
-var now = (performanceRef && performanceRef.now) ? function() {
-    return performanceRef.now.call(performanceRef);
-} : Date.now;
+var now = Date.now;
+
+if (performanceRef) {
+    var safePerformanceRef = performanceRef;
+    now = function() {
+        return safePerformanceRef.now();
+    };
+}
 
 module.exports = now;

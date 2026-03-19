@@ -15,8 +15,11 @@
     "core/Clock.js",
     "core/Path.js",
     "render-loops/Scheduler.js",
+    "render-loops/now.js",
+    "utilities/loadURL.js",
     "utilities/clamp.js",
-    "utilities/keyValueToArrays.js"
+    "utilities/keyValueToArrays.js",
+    "polyfills/animationFrame.js"
   ],
   "exclude": [
     "node_modules",
