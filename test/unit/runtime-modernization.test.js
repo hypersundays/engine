@@ -82,6 +82,12 @@ describe('runtime modernization', function() {
 
     it('prefers WebGL2 contexts before legacy fallbacks', function() {
         var calls = [];
+        var renderer = {
+            capabilities: {
+                contextName: null,
+                isWebGL2: false
+            }
+        };
         var canvas = {
             getContext: function(name) {
                 calls.push(name);
@@ -89,14 +95,24 @@ describe('runtime modernization', function() {
             }
         };
 
-        var context = WebGLRenderer.prototype.getWebGLContext.call({}, canvas);
+        var context = WebGLRenderer.prototype.getWebGLContext.call(renderer, canvas);
 
         expect(context).toEqual({ name: 'webgl2' });
         expect(calls[0]).toBe('webgl2');
+        expect(renderer.capabilities).toEqual({
+            contextName: 'webgl2',
+            isWebGL2: true
+        });
     });
 
     it('falls back to WebGL1 when WebGL2 is unavailable', function() {
         var calls = [];
+        var renderer = {
+            capabilities: {
+                contextName: null,
+                isWebGL2: false
+            }
+        };
         var canvas = {
             getContext: function(name) {
                 calls.push(name);
@@ -104,9 +120,13 @@ describe('runtime modernization', function() {
             }
         };
 
-        var context = WebGLRenderer.prototype.getWebGLContext.call({}, canvas);
+        var context = WebGLRenderer.prototype.getWebGLContext.call(renderer, canvas);
 
         expect(context).toEqual({ name: 'webgl' });
         expect(calls.slice(0, 2)).toEqual(['webgl2', 'webgl']);
+        expect(renderer.capabilities).toEqual({
+            contextName: 'webgl',
+            isWebGL2: false
+        });
     });
 });

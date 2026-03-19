@@ -63,6 +63,10 @@ function WebGLRenderer(canvas, compositor) {
 
     this.canvas = canvas;
     this.compositor = compositor;
+    this.capabilities = {
+        contextName: null,
+        isWebGL2: false
+    };
 
     var gl = this.gl = this.getWebGLContext(this.canvas);
 
@@ -157,10 +161,22 @@ WebGLRenderer.prototype.getWebGLContext = function getWebGLContext(canvas) {
         catch (error) {
             console.error('Error creating WebGL context: ' + error.toString());
         }
-        if (context) return context;
+        if (context) {
+            this.capabilities = this.capabilities || {
+                contextName: null,
+                isWebGL2: false
+            };
+            this.capabilities.contextName = names[i];
+            this.capabilities.isWebGL2 = names[i] === 'webgl2';
+            return context;
+        }
     }
 
     if (!context) {
+        if (this.capabilities) {
+            this.capabilities.contextName = null;
+            this.capabilities.isWebGL2 = false;
+        }
         console.error('Could not retrieve WebGL context. Please refer to https://www.khronos.org/webgl/ for requirements');
         return false;
     }
