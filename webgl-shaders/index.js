@@ -24,9 +24,13 @@
 
 'use strict';
 
+function resolveShader(shaderModule) {
+    return shaderModule && shaderModule.default ? shaderModule.default : shaderModule;
+}
+
 var shaders = {
-    vertex: require('./VertexShader.glsl'),
-    fragment: require('./FragmentShader.glsl')
+    vertex: resolveShader(require('./VertexShader.glsl')),
+    fragment: resolveShader(require('./FragmentShader.glsl'))
 };
 
 module.exports = shaders;

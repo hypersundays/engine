@@ -8,6 +8,10 @@ import * as ParticleModule from 'famous/physics/bodies/Particle';
 import * as SpringModule from 'famous/physics/forces/Spring';
 import * as DragModule from 'famous/physics/forces/Drag';
 import * as Vec3Module from 'famous/math/Vec3';
+import * as MeshModule from 'famous/webgl-renderables/Mesh';
+import * as AmbientLightModule from 'famous/webgl-renderables/lights/AmbientLight';
+import * as PointLightModule from 'famous/webgl-renderables/lights/PointLight';
+import * as ColorModule from 'famous/utilities/Color';
 
 const resolveCommonJS = (moduleNamespace) => (
   Object.prototype.hasOwnProperty.call(moduleNamespace, 'default')
@@ -23,6 +27,10 @@ const Particle = resolveCommonJS(ParticleModule);
 const Spring = resolveCommonJS(SpringModule);
 const Drag = resolveCommonJS(DragModule);
 const Vec3 = resolveCommonJS(Vec3Module);
+const Mesh = resolveCommonJS(MeshModule);
+const AmbientLight = resolveCommonJS(AmbientLightModule);
+const PointLight = resolveCommonJS(PointLightModule);
+const Color = resolveCommonJS(ColorModule);
 
 FamousEngine.init();
 
@@ -127,3 +135,39 @@ const spin = () => {
 };
 
 spin();
+
+const webglNode = scene.addChild();
+webglNode.setAlign(0.78, 0.5, 0);
+webglNode.setMountPoint(0.5, 0.5, 0.5);
+webglNode.setOrigin(0.5, 0.5, 0.5);
+webglNode.setAbsoluteSize(180, 180, 180);
+
+const mesh = new Mesh(webglNode);
+mesh.setGeometry('Box');
+mesh.setBaseColor(new Color('#8b5cf6'));
+mesh.setGlossiness(new Color('#ffffff'), 18);
+mesh.setFlatShading(false);
+
+const meshRotation = new Rotation(webglNode);
+
+const spinMesh = () => {
+  meshRotation.setX(meshRotation.getX() + Math.PI * 2, {
+    duration: 4200,
+    curve: 'linear'
+  });
+  meshRotation.setY(meshRotation.getY() + Math.PI * 2, {
+    duration: 3600,
+    curve: 'linear'
+  }, spinMesh);
+};
+
+spinMesh();
+
+const ambientLightNode = scene.addChild();
+const ambientLight = new AmbientLight(ambientLightNode);
+ambientLight.setColor(new Color('#3b82f6'));
+
+const pointLightNode = scene.addChild();
+pointLightNode.setPosition(120, -180, 240);
+const pointLight = new PointLight(pointLightNode);
+pointLight.setColor(new Color('#ffffff'));
