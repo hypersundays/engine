@@ -104,6 +104,10 @@ function GestureHandler(node, events) {
         }
     }
 
+    node.addUIEvent('pointerdown');
+    node.addUIEvent('pointermove');
+    node.addUIEvent('pointerup');
+    node.addUIEvent('pointercancel');
     node.addUIEvent('touchstart');
     node.addUIEvent('mousedown');
     node.addUIEvent('touchmove');
@@ -126,14 +130,18 @@ function GestureHandler(node, events) {
  */
 GestureHandler.prototype.onReceive = function onReceive (ev, payload) {
     switch(ev) {
+        case 'pointerdown':
         case 'touchstart':
         case 'mousedown':
             _processPointerStart.call(this, payload);
             break;
+        case 'pointermove':
         case 'touchmove':
         case 'mousemove':
             _processPointerMove.call(this, payload);
             break;
+        case 'pointercancel':
+        case 'pointerup':
         case 'touchend':
         case 'mouseup':
             _processPointerEnd.call(this, payload);
@@ -238,7 +246,7 @@ function _processPointerStart(e) {
     if (!e.targetTouches) {
         this.mice[0] = e;
         t = this.mice;
-        e.identifier = 1;
+        e.identifier = e.pointerId || 1;
     }
     else t = e.targetTouches;
 
@@ -338,7 +346,7 @@ function _processPointerMove(e) {
         if (!this.event.current) return;
         this.mice[0] = e;
         t = this.mice;
-        e.identifier = 1;
+        e.identifier = e.pointerId || 1;
     }
     else t = e.targetTouches;
 

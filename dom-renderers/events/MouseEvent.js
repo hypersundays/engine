@@ -149,6 +149,24 @@ function MouseEvent(ev) {
      * @type Number
      */
     this.offsetY = ev.offsetY;
+
+    /**
+     * @type MouseEvent#pointerId
+     * @type Number
+     */
+    this.pointerId = ev.pointerId;
+
+    /**
+     * @type MouseEvent#pointerType
+     * @type String
+     */
+    this.pointerType = ev.pointerType;
+
+    /**
+     * @type MouseEvent#isPrimary
+     * @type Boolean
+     */
+    this.isPrimary = ev.isPrimary;
 }
 
 MouseEvent.prototype = Object.create(UIEvent.prototype);

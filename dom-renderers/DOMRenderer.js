@@ -202,8 +202,7 @@ DOMRenderer.prototype.unsubscribe = function unsubscribe(type) {
 DOMRenderer.prototype._triggerEvent = function _triggerEvent(ev) {
     if (this._lastEv === ev) return;
 
-    // Use ev.path, which is an array of Elements (polyfilled if needed).
-    var evPath = ev.path ? ev.path : _getPath(ev);
+    var evPath = _getEventPath(ev);
     // First element in the path is the element on which the event has actually
     // been emitted.
     for (var i = 0; i < evPath.length; i++) {
@@ -235,6 +234,12 @@ DOMRenderer.prototype._triggerEvent = function _triggerEvent(ev) {
         }
     }
 };
+
+function _getEventPath(ev) {
+    if (ev.composedPath) return ev.composedPath();
+    if (ev.path) return ev.path;
+    return _getPath(ev);
+}
 
 
 /**
