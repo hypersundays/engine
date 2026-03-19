@@ -26,6 +26,7 @@ test('demo renders the baseline scene and animates nodes', async function ({ pag
     await expect(page.locator('canvas.famous-webgl-renderer').evaluate(function(canvas) {
         return canvas.width > 0 && canvas.height > 0;
     })).resolves.toBe(true);
+    await expect(page.locator('#shaderReport')).toHaveCount(0);
     await expect(page.locator('.famous-dom-element')).toHaveCount(28);
     await expect(page.locator('.famous-dom-element-content').evaluateAll(function(nodes) {
         return nodes.some(function(node) {
