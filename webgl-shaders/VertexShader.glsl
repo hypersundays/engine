@@ -23,8 +23,8 @@
  */
 
 #pragma glslify: getNormalMatrix = require(./chunks/getNormalMatrix)
-#pragma glslify: inverse = require(./chunks/inverse)
-#pragma glslify: transpose = require(./chunks/transpose)
+#pragma glslify: fa_inverse = require(./chunks/inverse)
+#pragma glslify: fa_transpose = require(./chunks/transpose)
 
 /**
  * Converts vertex from modelspace to screenspace using transform
@@ -168,7 +168,7 @@ void main() {
     v_textureCoordinate = a_texCoord;
     vec3 invertedNormals = a_normals + (u_normals.x < 0.0 ? calculateOffset(u_normals) * 2.0 - 1.0 : vec3(0.0));
     invertedNormals.y *= -1.0;
-    v_normal = transpose(mat3(inverse(u_transform))) * invertedNormals;
+    v_normal = fa_transpose(mat3(fa_inverse(u_transform))) * invertedNormals;
     vec3 offsetPos = a_pos + calculateOffset(u_positionOffset);
     gl_Position = applyTransform(vec4(offsetPos, 1.0));
 }

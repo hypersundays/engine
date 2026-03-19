@@ -25,23 +25,23 @@
 /**
  * Calculates a matrix that creates the identity when multiplied by m
  * 
- * @method inverse
+ * @method fa_inverse
  * @private
  *
  *
  */
 
 
-float inverse(float m) {
+float fa_inverse(float m) {
     return 1.0 / m;
 }
 
-mat2 inverse(mat2 m) {
+mat2 fa_inverse(mat2 m) {
     return mat2(m[1][1],-m[0][1],
                -m[1][0], m[0][0]) / (m[0][0]*m[1][1] - m[0][1]*m[1][0]);
 }
 
-mat3 inverse(mat3 m) {
+mat3 fa_inverse(mat3 m) {
     float a00 = m[0][0], a01 = m[0][1], a02 = m[0][2];
     float a10 = m[1][0], a11 = m[1][1], a12 = m[1][2];
     float a20 = m[2][0], a21 = m[2][1], a22 = m[2][2];
@@ -57,7 +57,7 @@ mat3 inverse(mat3 m) {
                 b21, (-a21 * a00 + a01 * a20), (a11 * a00 - a01 * a10)) / det;
 }
 
-mat4 inverse(mat4 m) {
+mat4 fa_inverse(mat4 m) {
     float
         a00 = m[0][0], a01 = m[0][1], a02 = m[0][2], a03 = m[0][3],
         a10 = m[1][0], a11 = m[1][1], a12 = m[1][2], a13 = m[1][3],
@@ -98,4 +98,4 @@ mat4 inverse(mat4 m) {
         a20 * b03 - a21 * b01 + a22 * b00) / det;
 }
 
-#pragma glslify: export(inverse)
+#pragma glslify: export(fa_inverse)
