@@ -91,7 +91,10 @@ function WebGLRenderer(canvas, compositor) {
 
     this.textureManager = new TextureManager(gl);
     this.bufferRegistry = new BufferRegistry(gl);
-    this.program = new Program(gl, { debug: true });
+    this.program = new Program(gl, {
+        debug: true,
+        webgl2: this.capabilities.isWebGL2
+    });
 
     this.state = {
         boundArrayBuffer: null,

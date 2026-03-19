@@ -60,6 +60,13 @@ var masks =  {
     float: 8
 };
 
+function normalizeShaderSource(shaderSource) {
+    if (typeof shaderSource === 'string') return shaderSource;
+    if (shaderSource && typeof shaderSource.default === 'string') return shaderSource.default;
+
+    throw new Error('Shader source must resolve to a string.');
+}
+
 /**
  * Uniform keys and values
  */
@@ -119,6 +126,7 @@ var varyings = keyValueToArrays({
 function Program(gl, options) {
     this.gl = gl;
     this.options = options || {};
+    this.shaderProfile = this.options.webgl2 ? 'webgl2' : 'webgl1';
 
     this.registeredMaterials = {};
     this.cachedUniforms = {};
@@ -210,6 +218,21 @@ Program.prototype.registerMaterial = function registerMaterial(name, material) {
     return this.resetProgram();
 };
 
+Program.prototype.normalizeShaderSource = function normalizeShaderSourcePublic(shaderSource) {
+    return normalizeShaderSource(shaderSource);
+};
+
+Program.prototype.buildShaderSource = function buildShaderSource(headerLines, template, replacements) {
+    var source = normalizeShaderSource(template);
+    var key;
+
+    for (key in replacements) {
+        source = source.replace(key, replacements[key]);
+    }
+
+    return headerLines.join('') + source;
+};
+
 /**
  * Clears all cached uniforms and attribute locations.  Assembles
  * new fragment and vertex shaders and based on material from
@@ -274,17 +297,19 @@ Program.prototype.resetProgram = function resetProgram() {
         fragmentHeader.push('varying ' + TYPES[value.length] + name + ';\n');
     }
 
-    vertexSource = vertexHeader.join('') + vertexWrapper
-        .replace('#vert_definitions', this.definitionVert.join('\n'))
-        .replace('#vert_applications', this.applicationVert.join('\n'));
+    vertexSource = this.buildShaderSource(vertexHeader, vertexWrapper, {
+        '#vert_definitions': this.definitionVert.join('\n'),
+        '#vert_applications': this.applicationVert.join('\n')
+    });
 
-    fragmentSource = fragmentHeader.join('') + fragmentWrapper
-        .replace('#vec3_definitions', this.definitionVec3.join('\n'))
-        .replace('#vec3_applications', this.applicationVec3.join('\n'))
-        .replace('#vec4_definitions', this.definitionVec4.join('\n'))
-        .replace('#vec4_applications', this.applicationVec4.join('\n'))
-        .replace('#float_definitions', this.definitionFloat.join('\n'))
-        .replace('#float_applications', this.applicationFloat.join('\n'));
+    fragmentSource = this.buildShaderSource(fragmentHeader, fragmentWrapper, {
+        '#vec3_definitions': this.definitionVec3.join('\n'),
+        '#vec3_applications': this.applicationVec3.join('\n'),
+        '#vec4_definitions': this.definitionVec4.join('\n'),
+        '#vec4_applications': this.applicationVec4.join('\n'),
+        '#float_definitions': this.definitionFloat.join('\n'),
+        '#float_applications': this.applicationFloat.join('\n')
+    });
 
     program = this.gl.createProgram();
 
