@@ -53,6 +53,7 @@ var OBJLoader = {
  * @param {Function}    cb      Function to be fired upon successful formatting of obj
  * @param {Object}      options Options hash to that can affect the output of the OBJ
  *                              vertices.
+ * @param {AbortSignal} [options.signal] Optional abort signal forwarded to asset loading.
  * @return {undefined} undefined
  */
 OBJLoader.load = function load(url, cb, options) {
@@ -65,7 +66,10 @@ OBJLoader.load = function load(url, cb, options) {
                     this,
                     url,
                     options
-                )
+                ),
+                {
+                    signal: options && options.signal
+                }
             );
         }
         else {
