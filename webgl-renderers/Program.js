@@ -222,7 +222,7 @@ Program.prototype.normalizeShaderSource = function normalizeShaderSourcePublic(s
     return normalizeShaderSource(shaderSource);
 };
 
-Program.prototype.buildShaderSource = function buildShaderSource(headerLines, template, replacements) {
+Program.prototype.buildShaderSource = function buildShaderSource(headerLines, template, replacements, stage) {
     var source = normalizeShaderSource(template);
     var key;
 
@@ -230,7 +230,7 @@ Program.prototype.buildShaderSource = function buildShaderSource(headerLines, te
         source = source.replace(key, replacements[key]);
     }
 
-    return headerLines.join('') + source;
+    return headerLines.join('') + this.applyShaderLanguageSettings(source, stage || 'fragment');
 };
 
 Program.prototype.getShaderHeaderLines = function getShaderHeaderLines() {
@@ -258,6 +258,25 @@ Program.prototype.getShaderLanguageSettings = function getShaderLanguageSettings
         varyingOutKeyword: 'varying',
         fragmentColorTarget: 'gl_FragColor'
     };
+};
+
+Program.prototype.applyShaderLanguageSettings = function applyShaderLanguageSettings(source, stage) {
+    var settings = this.getShaderLanguageSettings();
+    var fragmentOutputDeclaration = settings.versionLine ? 'out vec4 ' + settings.fragmentColorTarget + ';' : '';
+    var fragmentOutputAssignment = settings.fragmentColorTarget + ' = color;';
+
+    return source
+        .replace(/#fa_attribute/g, settings.attributeKeyword)
+        .replace(/#fa_varying_in/g, settings.varyingInKeyword)
+        .replace(/#fa_varying_out/g, settings.varyingOutKeyword)
+        .replace(
+            /#fa_fragment_output_declaration/g,
+            stage === 'fragment' ? fragmentOutputDeclaration : ''
+        )
+        .replace(
+            /#fa_fragment_output_assignment/g,
+            stage === 'fragment' ? fragmentOutputAssignment : ''
+        );
 };
 
 /**
@@ -327,7 +346,7 @@ Program.prototype.resetProgram = function resetProgram() {
     vertexSource = this.buildShaderSource(vertexHeader, vertexWrapper, {
         '#vert_definitions': this.definitionVert.join('\n'),
         '#vert_applications': this.applicationVert.join('\n')
-    });
+    }, 'vertex');
 
     fragmentSource = this.buildShaderSource(fragmentHeader, fragmentWrapper, {
         '#vec3_definitions': this.definitionVec3.join('\n'),
@@ -336,7 +355,7 @@ Program.prototype.resetProgram = function resetProgram() {
         '#vec4_applications': this.applicationVec4.join('\n'),
         '#float_definitions': this.definitionFloat.join('\n'),
         '#float_applications': this.applicationFloat.join('\n')
-    });
+    }, 'fragment');
 
     program = this.gl.createProgram();
 

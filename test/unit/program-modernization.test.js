@@ -20,12 +20,13 @@ describe('program modernization', function() {
         var source = program.buildShaderSource(
             program.getShaderHeaderLines(),
             { default: 'void main() { #token }' },
-            { '#token': 'gl_FragColor = vec4(1.0);' }
+            { '#token': '#fa_fragment_output_assignment' },
+            'fragment'
         );
 
         expect(source).toContain('precision mediump float;');
         expect(source).toContain('#define FA_WEBGL2 0');
-        expect(source).toContain('gl_FragColor = vec4(1.0);');
+        expect(source).toContain('gl_FragColor = color;');
     });
 
     it('tracks the active shader profile for capability-aware program setup', function() {
@@ -49,5 +50,13 @@ describe('program modernization', function() {
             varyingOutKeyword: 'out',
             fragmentColorTarget: 'fa_fragColor'
         });
+        expect(webgl2Program.applyShaderLanguageSettings(
+            '#fa_fragment_output_declaration\nvoid main(){#fa_fragment_output_assignment}',
+            'fragment'
+        )).toContain('out vec4 fa_fragColor;');
+        expect(webgl2Program.applyShaderLanguageSettings(
+            '#fa_attribute vec3 position; #fa_varying_out vec2 uv;',
+            'vertex'
+        )).toContain('in vec3 position; out vec2 uv;');
     });
 });
