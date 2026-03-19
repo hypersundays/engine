@@ -12,15 +12,18 @@
     "lib": ["ES2020", "DOM"]
   },
   "include": [
+    "glsl.d.ts",
     "core/Clock.js",
     "core/Path.js",
     "renderers/inject-css.js",
     "render-loops/Scheduler.js",
     "render-loops/now.js",
     "utilities/loadURL.js",
+    "utilities/vendorPrefix.js",
     "utilities/clamp.js",
     "utilities/keyValueToArrays.js",
-    "polyfills/animationFrame.js"
+    "polyfills/animationFrame.js",
+    "webgl-shaders/index.js"
   ],
   "exclude": [
     "node_modules",

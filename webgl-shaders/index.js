@@ -22,10 +22,17 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
 
+/**
+ * @param {string | { default?: string }} shaderModule shader source module
+ * @return {string} normalized shader source
+ */
 function resolveShader(shaderModule) {
-    return shaderModule && shaderModule.default ? shaderModule.default : shaderModule;
+    if (typeof shaderModule === 'string') return shaderModule;
+    return shaderModule.default || '';
 }
 
 var shaders = {
