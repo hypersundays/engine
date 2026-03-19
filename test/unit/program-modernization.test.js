@@ -18,12 +18,13 @@ describe('program modernization', function() {
     it('builds shader sources from normalized templates and replacements', function() {
         var program = new Program(new ContextWebGL());
         var source = program.buildShaderSource(
-            ['precision mediump float;\n'],
+            program.getShaderHeaderLines(),
             { default: 'void main() { #token }' },
             { '#token': 'gl_FragColor = vec4(1.0);' }
         );
 
         expect(source).toContain('precision mediump float;');
+        expect(source).toContain('#define FA_WEBGL2 0');
         expect(source).toContain('gl_FragColor = vec4(1.0);');
     });
 
@@ -33,5 +34,6 @@ describe('program modernization', function() {
 
         expect(webgl1Program.shaderProfile).toBe('webgl1');
         expect(webgl2Program.shaderProfile).toBe('webgl2');
+        expect(webgl2Program.getShaderHeaderLines().join('')).toContain('#define FA_WEBGL2 1');
     });
 });

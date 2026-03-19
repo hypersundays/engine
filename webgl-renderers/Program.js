@@ -233,6 +233,13 @@ Program.prototype.buildShaderSource = function buildShaderSource(headerLines, te
     return headerLines.join('') + source;
 };
 
+Program.prototype.getShaderHeaderLines = function getShaderHeaderLines() {
+    return [
+        header,
+        '#define FA_WEBGL2 ' + (this.options.webgl2 ? 1 : 0) + '\n'
+    ];
+};
+
 /**
  * Clears all cached uniforms and attribute locations.  Assembles
  * new fragment and vertex shaders and based on material from
@@ -245,8 +252,8 @@ Program.prototype.buildShaderSource = function buildShaderSource(headerLines, te
  * @return {Program} Current program.
  */
 Program.prototype.resetProgram = function resetProgram() {
-    var vertexHeader = [header];
-    var fragmentHeader = [header];
+    var vertexHeader = this.getShaderHeaderLines();
+    var fragmentHeader = this.getShaderHeaderLines();
 
     var fragmentSource;
     var vertexSource;
