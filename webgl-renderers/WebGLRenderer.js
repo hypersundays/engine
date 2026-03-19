@@ -91,10 +91,7 @@ function WebGLRenderer(canvas, compositor) {
 
     this.textureManager = new TextureManager(gl);
     this.bufferRegistry = new BufferRegistry(gl);
-    this.program = new Program(gl, {
-        debug: true,
-        webgl2: this.capabilities.isWebGL2
-    });
+    this.program = new Program(gl, this.getProgramOptions());
 
     this.state = {
         boundArrayBuffer: null,
@@ -142,6 +139,23 @@ function WebGLRenderer(canvas, compositor) {
         3
     );
 }
+
+/**
+ * Returns shader-program options for the renderer's current capabilities.
+ * WebGL2 contexts are currently kept on the WebGL1-compatible shader profile
+ * until the shader graph fully supports GLSL 300 ES.
+ *
+ * @method
+ *
+ * @return {Object} Program options
+ */
+WebGLRenderer.prototype.getProgramOptions = function getProgramOptions() {
+    return {
+        debug: true,
+        webgl2: false,
+        capabilities: this.capabilities
+    };
+};
 
 /**
  * Attempts to retreive the WebGLRenderer context using several

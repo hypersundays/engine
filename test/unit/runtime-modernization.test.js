@@ -155,4 +155,22 @@ describe('runtime modernization', function() {
             isWebGL2: false
         });
     });
+
+    it('keeps renderer program options on the WebGL1 shader profile while WebGL2 support is staged', function() {
+        var options = WebGLRenderer.prototype.getProgramOptions.call({
+            capabilities: {
+                contextName: 'webgl2',
+                isWebGL2: true
+            }
+        });
+
+        expect(options).toEqual({
+            debug: true,
+            webgl2: false,
+            capabilities: {
+                contextName: 'webgl2',
+                isWebGL2: true
+            }
+        });
+    });
 });

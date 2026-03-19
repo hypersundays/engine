@@ -234,7 +234,9 @@ Program.prototype.buildShaderSource = function buildShaderSource(headerLines, te
 };
 
 Program.prototype.getShaderHeaderLines = function getShaderHeaderLines() {
+    var settings = this.getShaderLanguageSettings();
     return [
+        settings.versionLine,
         header,
         '#define FA_WEBGL2 ' + (this.options.webgl2 ? 1 : 0) + '\n'
     ];
@@ -293,6 +295,7 @@ Program.prototype.applyShaderLanguageSettings = function applyShaderLanguageSett
 Program.prototype.resetProgram = function resetProgram() {
     var vertexHeader = this.getShaderHeaderLines();
     var fragmentHeader = this.getShaderHeaderLines();
+    var shaderLanguageSettings = this.getShaderLanguageSettings();
 
     var fragmentSource;
     var vertexSource;
@@ -333,14 +336,14 @@ Program.prototype.resetProgram = function resetProgram() {
     for(i = 0; i < this.attributeNames.length; i++) {
         name = this.attributeNames[i];
         value = this.attributeValues[i];
-        vertexHeader.push('attribute ' + TYPES[value.length] + name + ';\n');
+        vertexHeader.push(shaderLanguageSettings.attributeKeyword + ' ' + TYPES[value.length] + name + ';\n');
     }
 
     for(i = 0; i < this.varyingNames.length; i++) {
         name = this.varyingNames[i];
         value = this.varyingValues[i];
-        vertexHeader.push('varying ' + TYPES[value.length]  + name + ';\n');
-        fragmentHeader.push('varying ' + TYPES[value.length] + name + ';\n');
+        vertexHeader.push(shaderLanguageSettings.varyingOutKeyword + ' ' + TYPES[value.length]  + name + ';\n');
+        fragmentHeader.push(shaderLanguageSettings.varyingInKeyword + ' ' + TYPES[value.length] + name + ';\n');
     }
 
     vertexSource = this.buildShaderSource(vertexHeader, vertexWrapper, {

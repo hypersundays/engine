@@ -25,6 +25,7 @@
 #pragma glslify: applyMaterial = require(./chunks/applyMaterial)
 #pragma glslify: applyLight = require(./chunks/applyLight)
 
+#fa_fragment_output_declaration
 
 /**
  * Writes the color of the pixel onto the screen
@@ -56,6 +57,6 @@ void main() {
                v_position)
     : material;
 
-    gl_FragColor = color;
-    gl_FragColor.a *= u_opacity;   
+    color.a *= u_opacity;
+    #fa_fragment_output_assignment
 }

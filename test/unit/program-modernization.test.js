@@ -19,7 +19,7 @@ describe('program modernization', function() {
         var program = new Program(new ContextWebGL());
         var source = program.buildShaderSource(
             program.getShaderHeaderLines(),
-            { default: 'void main() { #token }' },
+            { default: '#fa_fragment_output_declaration\nvoid main() { #token }' },
             { '#token': '#fa_fragment_output_assignment' },
             'fragment'
         );
@@ -50,6 +50,7 @@ describe('program modernization', function() {
             varyingOutKeyword: 'out',
             fragmentColorTarget: 'fa_fragColor'
         });
+        expect(webgl2Program.getShaderHeaderLines().join('')).toContain('#version 300 es');
         expect(webgl2Program.applyShaderLanguageSettings(
             '#fa_fragment_output_declaration\nvoid main(){#fa_fragment_output_assignment}',
             'fragment'
