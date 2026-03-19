@@ -16,7 +16,7 @@ test('demo renders the baseline scene and animates nodes', async function ({ pag
         var renderRoot = document.querySelector('.famous-dom-renderer');
         return renderRoot &&
             getComputedStyle(renderRoot).visibility === 'visible' &&
-            document.querySelectorAll('.famous-dom-element').length >= 3;
+            document.querySelectorAll('.famous-dom-element').length >= 27;
     });
 
     await expect(page.getByText('Physics + animation baseline')).toBeVisible();
@@ -25,6 +25,7 @@ test('demo renders the baseline scene and animates nodes', async function ({ pag
     await expect(page.locator('canvas.famous-webgl-renderer').evaluate(function(canvas) {
         return canvas.width > 0 && canvas.height > 0;
     })).resolves.toBe(true);
+    await expect(page.locator('.famous-dom-element')).toHaveCount(27);
 
     var before = await page.locator('.famous-dom-element').evaluateAll(function(nodes) {
         return nodes.map(function(node) {

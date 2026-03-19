@@ -171,3 +171,43 @@ const pointLightNode = scene.addChild();
 pointLightNode.setPosition(120, -180, 240);
 const pointLight = new PointLight(pointLightNode);
 pointLight.setColor(new Color('#ffffff'));
+
+const stressCount = 24;
+const stressNodes = [];
+
+for (let index = 0; index < stressCount; index += 1) {
+  const node = scene.addChild();
+  node.setAlign(0.22, 0.68, 0);
+  node.setOrigin(0.5, 0.5, 0);
+  node.setMountPoint(0.5, 0.5, 0);
+  node.setAbsoluteSize(22, 22, 0);
+
+  new DOMElement(node, {
+    properties: {
+      backgroundColor: index % 2 === 0 ? '#22c55e' : '#a855f7',
+      borderRadius: '999px',
+      boxShadow: '0 8px 18px rgba(15, 23, 42, 0.24)',
+      opacity: String(0.45 + (index % 5) * 0.1)
+    }
+  });
+
+  stressNodes.push(node);
+}
+
+const stressOrbit = {
+  onUpdate: (time) => {
+    stressNodes.forEach((node, index) => {
+      const angle = time / 900 + index * 0.32;
+      const radius = 110 + (index % 4) * 14;
+      node.setPosition(
+        Math.cos(angle) * radius,
+        Math.sin(angle * 1.35) * 44,
+        (index % 6) * 8
+      );
+    });
+
+    FamousEngine.requestUpdateOnNextTick(stressOrbit);
+  }
+};
+
+FamousEngine.requestUpdate(stressOrbit);

@@ -7,13 +7,13 @@ module.exports = defineConfig({
     timeout: 30000,
     retries: process.env.CI ? 2 : 0,
     use: {
-        baseURL: 'http://127.0.0.1:4175',
+        baseURL: 'http://127.0.0.1:4178',
         trace: 'on-first-retry'
     },
     webServer: {
-        command: 'npm run demo:build && npm run demo:preview -- --host 127.0.0.1 --port 4175',
-        url: 'http://127.0.0.1:4175',
-        reuseExistingServer: !process.env.CI,
+        command: 'npm run demo:build && npm run demo:preview -- --host 127.0.0.1 --port 4178',
+        url: 'http://127.0.0.1:4178',
+        reuseExistingServer: false,
         timeout: 120000
     }
 });
