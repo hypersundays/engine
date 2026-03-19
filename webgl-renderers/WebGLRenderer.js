@@ -147,7 +147,7 @@ function WebGLRenderer(canvas, compositor) {
  * @return {Object} WebGLContext WebGL context
  */
 WebGLRenderer.prototype.getWebGLContext = function getWebGLContext(canvas) {
-    var names = ['webgl2', 'webgl', 'experimental-webgl', 'webkit-3d', 'moz-webgl'];
+    var names = ['webgl2', 'webgl', 'experimental-webgl'];
     var context;
 
     for (var i = 0, len = names.length; i < len; i++) {

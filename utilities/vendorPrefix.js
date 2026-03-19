@@ -24,34 +24,18 @@
 
 'use strict';
 
-var PREFIXES = ['', '-ms-', '-webkit-', '-moz-', '-o-'];
-
 /**
- * A helper function used for determining the vendor prefixed version of the
- * passed in CSS property.
- *
- * Vendor checks are being conducted in the following order:
- *
- * 1. (no prefix)
- * 2. `-mz-`
- * 3. `-webkit-`
- * 4. `-moz-`
- * 5. `-o-`
+ * A helper function used for returning the modern CSS property name.
+ * Modern evergreen browsers expose the unprefixed property on the style API,
+ * so the function now acts as a compatibility shim for existing callers.
  *
  * @method vendorPrefix
  *
  * @param {String} property     CSS property (no camelCase), e.g.
  *                              `border-radius`.
- * @return {String} prefixed    Vendor prefixed version of passed in CSS
- *                              property (e.g. `-webkit-border-radius`).
+ * @return {String} property    The modern CSS property name.
  */
 function vendorPrefix(property) {
-    for (var i = 0; i < PREFIXES.length; i++) {
-        var prefixed = PREFIXES[i] + property;
-        if (document.documentElement.style[prefixed] === '') {
-            return prefixed;
-        }
-    }
     return property;
 }
 

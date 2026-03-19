@@ -38,28 +38,10 @@ var cAF = polyfills.cancelAnimationFrame;
  * @type {Boolean}
  */
 var DOCUMENT_ACCESS = typeof document !== 'undefined';
+var VENDOR_HIDDEN = 'hidden';
+var VENDOR_VISIBILITY_CHANGE = 'visibilitychange';
 
-if (DOCUMENT_ACCESS) {
-    var VENDOR_HIDDEN, VENDOR_VISIBILITY_CHANGE;
-
-    // Opera 12.10 and Firefox 18 and later support
-    if (typeof document.hidden !== 'undefined') {
-        VENDOR_HIDDEN = 'hidden';
-        VENDOR_VISIBILITY_CHANGE = 'visibilitychange';
-    }
-    else if (typeof document.mozHidden !== 'undefined') {
-        VENDOR_HIDDEN = 'mozHidden';
-        VENDOR_VISIBILITY_CHANGE = 'mozvisibilitychange';
-    }
-    else if (typeof document.msHidden !== 'undefined') {
-        VENDOR_HIDDEN = 'msHidden';
-        VENDOR_VISIBILITY_CHANGE = 'msvisibilitychange';
-    }
-    else if (typeof document.webkitHidden !== 'undefined') {
-        VENDOR_HIDDEN = 'webkitHidden';
-        VENDOR_VISIBILITY_CHANGE = 'webkitvisibilitychange';
-    }
-}
+var VISIBILITY_API_SUPPORTED = DOCUMENT_ACCESS && typeof document.hidden !== 'undefined';
 
 /**
  * RequestAnimationFrameLoop class used for updating objects on a frame-by-frame.
@@ -97,7 +79,7 @@ function RequestAnimationFrameLoop() {
 
     // The RequestAnimationFrameLoop supports running in a non-browser
     // environment (e.g. Worker).
-    if (DOCUMENT_ACCESS) {
+    if (VISIBILITY_API_SUPPORTED) {
         document.addEventListener(VENDOR_VISIBILITY_CHANGE, function() {
             _this._onVisibilityChange();
         });
