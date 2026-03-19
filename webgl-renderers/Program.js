@@ -385,8 +385,10 @@ Program.prototype.resetProgram = function resetProgram() {
 
     this.setUniforms(this.uniformNames, this.uniformValues);
 
-    var textureLocation = this.gl.getUniformLocation(this.program, 'u_textures[0]');
-    this.gl.uniform1iv(textureLocation, [0, 1, 2, 3, 4, 5, 6]);
+    if (this.program) {
+        var textureLocation = this.gl.getUniformLocation(this.program, 'u_textures[0]');
+        this.gl.uniform1iv(textureLocation, [0, 1, 2, 3, 4, 5, 6]);
+    }
 
     return this;
 };

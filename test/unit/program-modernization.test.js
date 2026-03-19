@@ -60,4 +60,22 @@ describe('program modernization', function() {
             'vertex'
         )).toContain('in vec3 position; out vec2 uv;');
     });
+
+    it('gracefully aborts uniform setup when shader program linking fails', function() {
+        var gl = new ContextWebGL();
+        gl.getProgramParameter = function() {
+            return false;
+        };
+        gl.getProgramInfoLog = function() {
+            return 'failed to link';
+        };
+        gl.getUniformLocation = vi.fn();
+        gl.uniform1iv = vi.fn();
+
+        var failingProgram = new Program(gl);
+
+        expect(failingProgram.program).toBeNull();
+        expect(gl.getUniformLocation).not.toHaveBeenCalled();
+        expect(gl.uniform1iv).not.toHaveBeenCalled();
+    });
 });
