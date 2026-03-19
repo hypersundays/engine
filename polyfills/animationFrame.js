@@ -6,25 +6,14 @@
 'use strict';
 
 var lastTime = 0;
-var vendors = ['ms', 'moz', 'webkit', 'o'];
+var globalScope = typeof globalThis !== 'undefined' ? globalThis : {};
 
-var rAF, cAF;
-
-if (typeof window === 'object') {
-    rAF = window.requestAnimationFrame;
-    cAF = window.cancelAnimationFrame || window.cancelRequestAnimationFrame;
-    for (var x = 0; x < vendors.length && !rAF; ++x) {
-        rAF = window[vendors[x] + 'RequestAnimationFrame'];
-        cAF = window[vendors[x] + 'CancelRequestAnimationFrame'] ||
-              window[vendors[x] + 'CancelAnimationFrame'];
-    }
-
-    if (rAF && !cAF) {
-        // cAF not supported.
-        // Fall back to setInterval for now (very rare).
-        rAF = null;
-    }
-}
+var rAF = typeof globalScope.requestAnimationFrame === 'function'
+    ? globalScope.requestAnimationFrame.bind(globalScope)
+    : null;
+var cAF = typeof globalScope.cancelAnimationFrame === 'function'
+    ? globalScope.cancelAnimationFrame.bind(globalScope)
+    : null;
 
 if (!rAF) {
     var now = Date.now ? Date.now : function () {

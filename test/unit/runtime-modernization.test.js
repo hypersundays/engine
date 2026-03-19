@@ -51,6 +51,35 @@ describe('runtime modernization', function() {
         delete global.fetch;
     });
 
+    it('prefers the modern global requestAnimationFrame APIs', function() {
+        var originalRAF = global.requestAnimationFrame;
+        var originalCAF = global.cancelAnimationFrame;
+        var callback = function() {};
+
+        vi.stubGlobal('requestAnimationFrame', function(fn) {
+            expect(fn).toBe(callback);
+            return 17;
+        });
+        vi.stubGlobal('cancelAnimationFrame', function() {
+            return undefined;
+        });
+
+        delete require.cache[require.resolve('../../polyfills/animationFrame')];
+
+        var animationFrame = require('../../polyfills/animationFrame');
+
+        expect(animationFrame.requestAnimationFrame(callback)).toBe(17);
+        expect(typeof animationFrame.cancelAnimationFrame).toBe('function');
+
+        delete require.cache[require.resolve('../../polyfills/animationFrame')];
+
+        if (originalRAF === undefined) delete global.requestAnimationFrame;
+        else global.requestAnimationFrame = originalRAF;
+
+        if (originalCAF === undefined) delete global.cancelAnimationFrame;
+        else global.cancelAnimationFrame = originalCAF;
+    });
+
     it('prefers WebGL2 contexts before legacy fallbacks', function() {
         var calls = [];
         var canvas = {
