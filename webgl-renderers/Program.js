@@ -240,6 +240,26 @@ Program.prototype.getShaderHeaderLines = function getShaderHeaderLines() {
     ];
 };
 
+Program.prototype.getShaderLanguageSettings = function getShaderLanguageSettings() {
+    if (this.options.webgl2) {
+        return {
+            versionLine: '#version 300 es\n',
+            attributeKeyword: 'in',
+            varyingInKeyword: 'in',
+            varyingOutKeyword: 'out',
+            fragmentColorTarget: 'fa_fragColor'
+        };
+    }
+
+    return {
+        versionLine: '',
+        attributeKeyword: 'attribute',
+        varyingInKeyword: 'varying',
+        varyingOutKeyword: 'varying',
+        fragmentColorTarget: 'gl_FragColor'
+    };
+};
+
 /**
  * Clears all cached uniforms and attribute locations.  Assembles
  * new fragment and vertex shaders and based on material from

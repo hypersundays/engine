@@ -35,5 +35,19 @@ describe('program modernization', function() {
         expect(webgl1Program.shaderProfile).toBe('webgl1');
         expect(webgl2Program.shaderProfile).toBe('webgl2');
         expect(webgl2Program.getShaderHeaderLines().join('')).toContain('#define FA_WEBGL2 1');
+        expect(webgl1Program.getShaderLanguageSettings()).toEqual({
+            versionLine: '',
+            attributeKeyword: 'attribute',
+            varyingInKeyword: 'varying',
+            varyingOutKeyword: 'varying',
+            fragmentColorTarget: 'gl_FragColor'
+        });
+        expect(webgl2Program.getShaderLanguageSettings()).toEqual({
+            versionLine: '#version 300 es\n',
+            attributeKeyword: 'in',
+            varyingInKeyword: 'in',
+            varyingOutKeyword: 'out',
+            fragmentColorTarget: 'fa_fragColor'
+        });
     });
 });
