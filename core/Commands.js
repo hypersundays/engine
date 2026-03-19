@@ -22,7 +22,14 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
+
+/**
+ * @typedef {{ i: number, result: string }} PrettyPrintState
+ * @typedef {(buffer: Array<unknown>, data: PrettyPrintState) => void} CommandPrinter
+ */
 
 /**
  * An enumeration of the commands in our command queue.
@@ -66,15 +73,23 @@ var Commands = {
     PREVENT_DEFAULT: 35,
     UNSUBSCRIBE: 36,
     CHANGE_TEXT_CONTENT: 37,
+    /**
+     * @param {Array<unknown>} buffer
+     * @param {number} [start]
+     * @param {number} [count]
+     * @return {string}
+     */
     prettyPrint: function (buffer, start, count) {
+        /** @type {CommandPrinter | undefined} */
         var callback;
         start = start ? start : 0;
+        /** @type {PrettyPrintState} */
         var data = {
             i: start,
             result: ''
         };
         for (var len = count ? count + start : buffer.length ; data.i < len ; data.i++) {
-            callback = commandPrinters[buffer[data.i]];
+            callback = commandPrinters[/** @type {number} */ (buffer[data.i])];
             if (!callback) throw new Error('PARSE ERROR: no command registered for: ' + buffer[data.i]);
             callback(buffer, data);
         }
@@ -82,6 +97,7 @@ var Commands = {
     }
 };
 
+/** @type {CommandPrinter[]} */
 var commandPrinters = [];
 
 commandPrinters[Commands.INIT_DOM] = function init_dom (buffer, data) {

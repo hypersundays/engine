@@ -15,6 +15,7 @@
     "glsl.d.ts",
     "core/Channel.js",
     "core/Clock.js",
+    "core/Commands.js",
     "core/Event.js",
     "core/Path.js",
     "render-loops/ContainerLoop.js",
