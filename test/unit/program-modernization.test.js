@@ -41,14 +41,16 @@ describe('program modernization', function() {
             attributeKeyword: 'attribute',
             varyingInKeyword: 'varying',
             varyingOutKeyword: 'varying',
-            fragmentColorTarget: 'gl_FragColor'
+            fragmentColorTarget: 'gl_FragColor',
+            textureFunctionName: 'texture2D'
         });
         expect(webgl2Program.getShaderLanguageSettings()).toEqual({
             versionLine: '#version 300 es\n',
             attributeKeyword: 'in',
             varyingInKeyword: 'in',
             varyingOutKeyword: 'out',
-            fragmentColorTarget: 'fa_fragColor'
+            fragmentColorTarget: 'fa_fragColor',
+            textureFunctionName: 'texture'
         });
         expect(webgl2Program.getShaderHeaderLines().join('')).toContain('#version 300 es');
         expect(webgl2Program.applyShaderLanguageSettings(
@@ -63,6 +65,10 @@ describe('program modernization', function() {
             'gl_FragColor = texture2D(tex, uv); transpose(mat4(1.0)); inverse(mat4(1.0));',
             'fragment'
         )).toContain('fa_fragColor = texture(tex, uv); fa_transpose(mat4(1.0)); fa_inverse(mat4(1.0));');
+        expect(webgl2Program.applyShaderLanguageSettings(
+            '#fa_fragment_color = #fa_texture_sample(tex, uv);',
+            'fragment'
+        )).toContain('fa_fragColor = texture(tex, uv);');
     });
 
     it('gracefully aborts uniform setup when shader program linking fails', function() {

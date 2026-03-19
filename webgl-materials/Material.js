@@ -76,7 +76,7 @@ var snippets = {
 
     /* fragCoord - The fragCoord function returns the fragment's position in screenspace. */
 
-    fragCoord: {glsl: 'gl_FragColor;', output: 4 },
+    fragCoord: {glsl: '#fa_fragment_color;', output: 4 },
 
     /* Sin - The sin function returns the sine of an angle in radians. The input parameter can be a floating scalar or a float vector. In case of a float vector the sine is calculated separately for every component. */
 
@@ -131,7 +131,7 @@ var snippets = {
 
     /* The image function fetches the model's */
 
-    image: {glsl:'texture2D($TEXTURE, v_textureCoordinate);', output: 4 },
+    image: {glsl:'#fa_texture_sample($TEXTURE, v_textureCoordinate);', output: 4 },
 
 
     /* The constant function returns a static value which is defined at compile-time that cannot be changed dynamically.*/

@@ -249,7 +249,8 @@ Program.prototype.getShaderLanguageSettings = function getShaderLanguageSettings
             attributeKeyword: 'in',
             varyingInKeyword: 'in',
             varyingOutKeyword: 'out',
-            fragmentColorTarget: 'fa_fragColor'
+            fragmentColorTarget: 'fa_fragColor',
+            textureFunctionName: 'texture'
         };
     }
 
@@ -258,7 +259,8 @@ Program.prototype.getShaderLanguageSettings = function getShaderLanguageSettings
         attributeKeyword: 'attribute',
         varyingInKeyword: 'varying',
         varyingOutKeyword: 'varying',
-        fragmentColorTarget: 'gl_FragColor'
+        fragmentColorTarget: 'gl_FragColor',
+        textureFunctionName: 'texture2D'
     };
 };
 
@@ -276,6 +278,8 @@ Program.prototype.applyShaderLanguageSettings = function applyShaderLanguageSett
     }
 
     return source
+        .replace(/#fa_texture_sample/g, settings.textureFunctionName)
+        .replace(/#fa_fragment_color/g, settings.fragmentColorTarget)
         .replace(/#fa_attribute/g, settings.attributeKeyword)
         .replace(/#fa_varying_in/g, settings.varyingInKeyword)
         .replace(/#fa_varying_out/g, settings.varyingOutKeyword)
