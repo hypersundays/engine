@@ -28,7 +28,12 @@
 
 var now = require('./now');
 var Scheduler = require('./Scheduler');
+/** @type {Partial<typeof globalThis> & { addEventListener?: (type: string, listener: (event: { data?: unknown }) => void) => void }} */
 var globalScope = typeof globalThis !== 'undefined' ? globalThis : {};
+
+/**
+ * @typedef {{ update: (time: number) => void }} Updateable
+ */
 
 /**
  * Loop class used for updating objects on a frame-by-frame. Synchronizes the
@@ -49,7 +54,7 @@ function ContainerLoop() {
 
     var _this = this;
     if (typeof globalScope.addEventListener === 'function') {
-        globalScope.addEventListener('message', function(ev) {
+        globalScope.addEventListener('message', function(/** @type {{ data?: unknown }} */ ev) {
             _this._onWindowMessage(ev);
         });
     }
@@ -59,11 +64,9 @@ function ContainerLoop() {
  * When there is a `FRAME` message passed into the window
  *
  * @method
- * @private
+ * @param {{ data?: unknown }} ev event payload from the window
  *
- * @param {Object} ev event payload from the window
- * 
- * @return {ContainerLoop} this
+ * @return {undefined} undefined
  */
 ContainerLoop.prototype._onWindowMessage = function _onWindowMessage(ev) {
     if (
@@ -133,8 +136,7 @@ ContainerLoop.prototype.step = function step (time) {
  *
  * @method
  * 
- * @param {Object} updateable object to be updated
- * @param {Function} updateable.update update function to be called on the registered object
+ * @param {Updateable} updateable object to be updated
  *
  * @return {ContainerLoop} this
  */
@@ -149,7 +151,7 @@ ContainerLoop.prototype.update = function update(updateable) {
  *
  * @method
  * 
- * @param {Object} updateable updateable object previously registered using `update`
+ * @param {Updateable} updateable updateable object previously registered using `update`
  *
  * @return {ContainerLoop} this
  */

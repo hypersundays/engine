@@ -16,6 +16,7 @@
     "core/Channel.js",
     "core/Clock.js",
     "core/Path.js",
+    "render-loops/ContainerLoop.js",
     "renderers/inject-css.js",
     "render-loops/Scheduler.js",
     "render-loops/now.js",
