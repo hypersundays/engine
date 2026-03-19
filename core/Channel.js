@@ -22,7 +22,13 @@
  * THE SOFTWARE.
  */
 
+// @ts-check
+
 'use strict';
+
+/**
+ * @typedef {(message: unknown) => void} ChannelMessageHandler
+ */
 
 /**
  * Channels are being used for interacting with the UI Thread when running in
@@ -33,6 +39,8 @@
  * @constructor
  */
 function Channel() {
+    this._workerMode = false;
+
     if (typeof self !== 'undefined' && self.window !== self) {
         this._enterWorkerMode();
     }
@@ -53,7 +61,7 @@ Channel.prototype._enterWorkerMode = function _enterWorkerMode() {
     this._workerMode = true;
     var _this = this;
     self.addEventListener('message', function onmessage(ev) {
-        _this.onMessage(ev.data);
+        if (_this.onMessage) _this.onMessage(ev.data);
     });
 };
 
@@ -61,7 +69,7 @@ Channel.prototype._enterWorkerMode = function _enterWorkerMode() {
  * Meant to be overridden by `Famous`.
  * Assigned method will be invoked for every received message.
  *
- * @type {Function}
+ * @type {ChannelMessageHandler | null}
  * @override
  *
  * @return {undefined} undefined
@@ -71,7 +79,7 @@ Channel.prototype.onMessage = null;
 /**
  * Sends a message to the UIManager.
  *
- * @param  {Any}    message Arbitrary message object.
+ * @param  {unknown}    message Arbitrary message object.
  *
  * @return {undefined} undefined
  */
@@ -79,7 +87,7 @@ Channel.prototype.sendMessage = function sendMessage (message) {
     if (this._workerMode) {
         self.postMessage(message);
     }
-    else {
+    else if (this.onmessage) {
         this.onmessage(message);
     }
 };
@@ -91,7 +99,7 @@ Channel.prototype.sendMessage = function sendMessage (message) {
  *
  * Assigned method will be invoked for every message posted by `famous-core`.
  *
- * @type {Function}
+ * @type {ChannelMessageHandler | null}
  * @override
  */
 Channel.prototype.onmessage = null;
@@ -104,12 +112,12 @@ Channel.prototype.onmessage = null;
  * @private
  * @alias onMessage
  *
- * @param {Any} message a message to send over the channel
+ * @param {unknown} message a message to send over the channel
  *
- * @return {undefined} undefined
+ * @return {void} undefined
  */
 Channel.prototype.postMessage = function postMessage(message) {
-    return this.onMessage(message);
+    if (this.onMessage) return this.onMessage(message);
 };
 
 module.exports = Channel;
