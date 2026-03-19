@@ -59,6 +59,23 @@ new DOMElement(labelNode, {
   }
 });
 
+const safeTextNode = scene.addChild();
+safeTextNode.setAlign(0.5, 0.17, 0);
+safeTextNode.setOrigin(0.5, 0.5, 0);
+safeTextNode.setAbsoluteSize(320, 32, 0);
+
+const safeTextElement = new DOMElement(safeTextNode, {
+  properties: {
+    color: '#cbd5e1',
+    display: 'flex',
+    fontSize: '13px',
+    justifyContent: 'center',
+    letterSpacing: '0.02em'
+  }
+});
+
+safeTextElement.setTextContent('Safe text <strong>literal</strong>');
+
 const physicsNode = scene.addChild();
 physicsNode.setAlign(0.5, 0.45, 0);
 physicsNode.setOrigin(0.5, 0.5, 0);

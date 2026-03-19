@@ -48,6 +48,8 @@ var Size = require('../core/Size');
  *                                      DOMElement.
  * @param {String} options.content      String to be applied as the content of the
  *                                      actual DOMElement.
+ * @param {String} options.textContent  String to be applied as plain text content
+ *                                      of the actual DOMElement.
  * @param {Boolean} options.cutout      Specifies the presence of a 'cutout' in the
  *                                      WebGL canvas over this element which allows
  *                                      for DOM and WebGL layering.  On by default.
@@ -68,6 +70,7 @@ function DOMElement(node, options) {
 
     this._attributes = {};
     this._content = '';
+    this._textContent = null;
 
     this._tagName = options && options.tagName ? options.tagName : 'div';
     this._renderSize = [0, 0, 0];
@@ -100,6 +103,7 @@ function DOMElement(node, options) {
 
     if (options.id) this.setId(options.id);
     if (options.content) this.setContent(options.content);
+    if (options.textContent) this.setTextContent(options.textContent);
     if (options.cutout === false) this.setCutoutState(options.cutout);
 }
 
@@ -116,6 +120,7 @@ DOMElement.prototype.getValue = function getValue() {
         styles: this._styles,
         attributes: this._attributes,
         content: this._content,
+        textContent: this._textContent,
         id: this._attributes.id,
         tagName: this._tagName
     };
@@ -602,8 +607,30 @@ DOMElement.prototype.setProperty = function setProperty (name, value) {
  */
 DOMElement.prototype.setContent = function setContent (content) {
     if (this._content !== content || this._inDraw) {
+        this._textContent = null;
         this._content = content;
         if (this._initialized) this._changeQueue.push(Commands.CHANGE_CONTENT, content);
+        if (!this._requestingUpdate) this._requestUpdate();
+        if (this._renderSized) this._requestRenderSize = true;
+    }
+
+    return this;
+};
+
+/**
+ * Sets plain text content on the DOMElement without parsing HTML.
+ *
+ * @method
+ *
+ * @param {String} content Content to be set using `.textContent = ...`
+ *
+ * @return {DOMElement} this
+ */
+DOMElement.prototype.setTextContent = function setTextContent (content) {
+    if (this._textContent !== content || this._inDraw) {
+        this._content = '';
+        this._textContent = content;
+        if (this._initialized) this._changeQueue.push(Commands.CHANGE_TEXT_CONTENT, content);
         if (!this._requestingUpdate) this._requestUpdate();
         if (this._renderSized) this._requestRenderSize = true;
     }
@@ -672,7 +699,8 @@ DOMElement.prototype.draw = function draw() {
     for (i = 0, len = this._classes.length ; i < len ; i++)
         this.addClass(this._classes[i]);
 
-    if (this._content) this.setContent(this._content);
+    if (this._textContent != null) this.setTextContent(this._textContent);
+    else if (this._content) this.setContent(this._content);
 
     for (key in this._styles)
         if (this._styles[key] != null)

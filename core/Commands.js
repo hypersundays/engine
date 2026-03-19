@@ -65,6 +65,7 @@ var Commands = {
     ALLOW_DEFAULT: 34,
     PREVENT_DEFAULT: 35,
     UNSUBSCRIBE: 36,
+    CHANGE_TEXT_CONTENT: 37,
     prettyPrint: function (buffer, start, count) {
         var callback;
         start = start ? start : 0;
@@ -107,6 +108,10 @@ commandPrinters[Commands.CHANGE_PROPERTY] = function change_property (buffer, da
 
 commandPrinters[Commands.CHANGE_CONTENT] = function change_content (buffer, data) {
     data.result += data.i + '. CHANGE_CONTENT\n    content: ' + buffer[++data.i] + '\n\n';
+};
+
+commandPrinters[Commands.CHANGE_TEXT_CONTENT] = function change_text_content (buffer, data) {
+    data.result += data.i + '. CHANGE_TEXT_CONTENT\n    content: ' + buffer[++data.i] + '\n\n';
 };
 
 commandPrinters[Commands.CHANGE_ATTRIBUTE] = function change_attribute (buffer, data) {

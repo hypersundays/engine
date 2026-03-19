@@ -634,6 +634,39 @@ DOMRenderer.prototype.setContent = function setContent(content) {
     );
 };
 
+/**
+ * Sets the text content of the currently loaded target without parsing HTML.
+ *
+ * @method
+ *
+ * @param {String} content Content to be set as `textContent`
+ *
+ * @return {undefined} undefined
+ */
+DOMRenderer.prototype.setTextContent = function setTextContent(content) {
+    this._assertTargetLoaded();
+
+    if (this._target.formElement) {
+        this._target.element.value = content;
+    }
+    else {
+        if (!this._target.content) {
+            this._target.content = document.createElement('div');
+            this._target.content.classList.add('famous-dom-element-content');
+            this._target.element.insertBefore(
+                this._target.content,
+                this._target.element.firstChild
+            );
+        }
+        this._target.content.textContent = content;
+    }
+
+    this.setSize(
+        this._target.explicitWidth ? false : this._target.size[0],
+        this._target.explicitHeight ? false : this._target.size[1]
+    );
+};
+
 
 /**
  * Sets the passed in transform matrix (world space). Inverts the parent's world
