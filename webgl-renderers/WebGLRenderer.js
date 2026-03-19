@@ -152,7 +152,7 @@ function WebGLRenderer(canvas, compositor) {
 WebGLRenderer.prototype.getProgramOptions = function getProgramOptions() {
     return {
         debug: true,
-        webgl2: false,
+        webgl2: this.capabilities.isWebGL2,
         capabilities: this.capabilities
     };
 };

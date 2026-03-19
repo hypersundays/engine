@@ -59,6 +59,10 @@ describe('program modernization', function() {
             '#fa_attribute vec3 position; #fa_varying_out vec2 uv;',
             'vertex'
         )).toContain('in vec3 position; out vec2 uv;');
+        expect(webgl2Program.applyShaderLanguageSettings(
+            'gl_FragColor = texture2D(tex, uv); transpose(mat4(1.0)); inverse(mat4(1.0));',
+            'fragment'
+        )).toContain('fa_fragColor = texture(tex, uv); fa_transpose(mat4(1.0)); fa_inverse(mat4(1.0));');
     });
 
     it('gracefully aborts uniform setup when shader program linking fails', function() {

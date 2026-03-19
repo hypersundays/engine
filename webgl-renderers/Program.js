@@ -267,6 +267,14 @@ Program.prototype.applyShaderLanguageSettings = function applyShaderLanguageSett
     var fragmentOutputDeclaration = settings.versionLine ? 'out vec4 ' + settings.fragmentColorTarget + ';' : '';
     var fragmentOutputAssignment = settings.fragmentColorTarget + ' = color;';
 
+    if (settings.versionLine) {
+        source = source
+            .replace(/\btexture2D\s*\(/g, 'texture(')
+            .replace(/\bgl_FragColor\b/g, settings.fragmentColorTarget)
+            .replace(/\binverse\s*\(/g, 'fa_inverse(')
+            .replace(/\btranspose\s*\(/g, 'fa_transpose(');
+    }
+
     return source
         .replace(/#fa_attribute/g, settings.attributeKeyword)
         .replace(/#fa_varying_in/g, settings.varyingInKeyword)

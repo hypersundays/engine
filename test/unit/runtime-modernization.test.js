@@ -166,7 +166,7 @@ describe('runtime modernization', function() {
 
         expect(options).toEqual({
             debug: true,
-            webgl2: false,
+            webgl2: true,
             capabilities: {
                 contextName: 'webgl2',
                 isWebGL2: true
